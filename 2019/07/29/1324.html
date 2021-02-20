@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <!--Google收录-->
+  <meta name="google-site-verification" content="dXAcEp5lSwJqx8PoeMwUO2Wg5lcetfO-LRvcIFdUC3s" />
+  <!--百度统计-->
+  
+  <script src="/js/baidutongji.js"></script>  
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>编程作业ex1 | 泡码侠</title>
+  <meta name="description" content="编程练习-线性回归  octave实现  1. 一个简单的热身程序 返回一个5×5的矩阵 1A &#x3D; eye(5); octave输出如下：   2. 单变量线性回归 注释： 此程序的入口程序是ex1.m 在本练习的这一部分中，将使用一个变量实现线性回归来预测一辆食品卡车的利润。假设一家连锁餐厅的首席执行官，正在考虑在不同的城市开设一家新餐厅。这个连锁店已经在各个城市有了卡车，通过计算可以得到城市">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编程作业ex1">
+<meta property="og:url" content="https://blog.paomax.com/2019/07/29/1324.html">
+<meta property="og:site_name" content="泡码侠">
+<meta property="og:description" content="编程练习-线性回归  octave实现  1. 一个简单的热身程序 返回一个5×5的矩阵 1A &#x3D; eye(5); octave输出如下：   2. 单变量线性回归 注释： 此程序的入口程序是ex1.m 在本练习的这一部分中，将使用一个变量实现线性回归来预测一辆食品卡车的利润。假设一家连锁餐厅的首席执行官，正在考虑在不同的城市开设一家新餐厅。这个连锁店已经在各个城市有了卡车，通过计算可以得到城市">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.paomax.com/images/article/ai/ex1-1.png">
+<meta property="og:image" content="https://blog.paomax.com/images/article/ai/ex1-2.png">
+<meta property="og:image" content="https://blog.paomax.com/images/article/ai/ex1-3.png">
+<meta property="og:image" content="https://blog.paomax.com/images/article/ai/ex1-4.png">
+<meta property="og:image" content="https://blog.paomax.com/images/article/ai/ex1-5.png">
+<meta property="article:published_time" content="2019-07-29T05:24:39.000Z">
+<meta property="article:modified_time" content="2021-02-20T05:08:10.508Z">
+<meta property="article:author" content="TenYoDun">
+<meta property="article:tag" content="人工智能">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="吴恩达">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.paomax.com/images/article/ai/ex1-1.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://blog.paomax.com/2019/07/29/1324.html">
+  
+    <link rel="alternate" href="/atom.xml" title="泡码侠" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    <link href="//cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" rel="stylesheet">
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+<meta name="generator" content="Hexo 4.2.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/TenYoDun" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.png" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">泡码侠</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">如泡茶一样，品味代码</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav menu-highlight">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/TenYoDun" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/brewcode" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p><p style="font-weight:800">我的微信</p><img src="/images/mywechat.png" style="width:160px;height:160px">
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/python/%E7%88%AC%E8%99%AB/">爬虫</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/python/%E7%88%AC%E8%99%AB/%E5%BE%85%E7%A0%94%E7%A9%B6/">待研究</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/%E7%AE%97%E6%B3%95/">算法</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%B4%E6%81%A9%E8%BE%BE/" rel="tag">吴恩达</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%AA%E8%AE%BA/" rel="tag">绪论</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 14px;">人工智能</a> <a href="/tags/%E5%90%B4%E6%81%A9%E8%BE%BE/" style="font-size: 14px;">吴恩达</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 14px;">机器学习</a> <a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 13px;">爬虫</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 13.5px;">算法</a> <a href="/tags/%E7%BB%AA%E8%AE%BA/" style="font-size: 13px;">绪论</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/python/">python</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/python/%E7%AE%97%E6%B3%95/">算法</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/19/1900.html" class="title">ProUM算法-V2</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-19T11:00:28.000Z" itemprop="datePublished">2020-05-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/python/">python</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/python/%E7%AE%97%E6%B3%95/">算法</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/03/2232.html" class="title">ProUM算法</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-03T14:32:03.000Z" itemprop="datePublished">2020-05-03</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/python/">python</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/python/%E7%AE%97%E6%B3%95/">算法</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/09/1906.html" class="title">FP-growth算法</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-09T11:06:03.000Z" itemprop="datePublished">2020-04-09</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/python/">python</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/python/%E7%88%AC%E8%99%AB/">爬虫</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/04/1600.html" class="title">淘宝登录密码RSA加密分析及相关代码的python实现</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-04T08:00:48.000Z" itemprop="datePublished">2020-03-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/07/30/0908.html" class="title">单变量线性回归</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-07-30T01:08:39.000Z" itemprop="datePublished">2019-07-30</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#编程练习-线性回归"><span class="toc-number">1.</span> <span class="toc-text"> 编程练习-线性回归</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#octave实现"><span class="toc-number">1.1.</span> <span class="toc-text"> octave实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-一个简单的热身程序"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1. 一个简单的热身程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-单变量线性回归"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 2. 单变量线性回归</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#21-绘制数据"><span class="toc-number">1.1.2.1.</span> <span class="toc-text"> 2.1 绘制数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#22-梯度下降"><span class="toc-number">1.1.2.2.</span> <span class="toc-text"> 2.2 梯度下降</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#221-更新方程"><span class="toc-number">1.1.2.2.1.</span> <span class="toc-text"> 2.2.1 更新方程</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#23-代码实现"><span class="toc-number">1.1.2.3.</span> <span class="toc-text"> 2.3 代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#231-求代价函数jtheta"><span class="toc-number">1.1.2.3.1.</span> <span class="toc-text"> 2.3.1 求代价函数j(θ)j(\theta)j(θ)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#232-实现梯度下降"><span class="toc-number">1.1.2.3.2.</span> <span class="toc-text"> 2.3.2 实现梯度下降</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#232-可视化-jtheta"><span class="toc-number">1.1.2.3.3.</span> <span class="toc-text"> 2.3.2 可视化 J(θ)J(\theta)J(θ)</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python实现"><span class="toc-number">1.2.</span> <span class="toc-text"> python实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 2.</span></a></li></ol></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-编程作业ex1" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      编程作业ex1
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2019/07/29/1324.html" class="article-date">
+	  <time datetime="2019-07-29T05:24:39.000Z" itemprop="datePublished">2019-07-29</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a>, <a class="article-tag-link" href="/tags/%E5%90%B4%E6%81%A9%E8%BE%BE/" rel="tag">吴恩达</a>, <a class="article-tag-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/07/29/1324.html#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 4.6k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 23(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="编程练习-线性回归"><a class="markdownIt-Anchor" href="#编程练习-线性回归"></a> 编程练习-线性回归</h1>
+<h2 id="octave实现"><a class="markdownIt-Anchor" href="#octave实现"></a> <strong>octave实现</strong></h2>
+<h3 id="1-一个简单的热身程序"><a class="markdownIt-Anchor" href="#1-一个简单的热身程序"></a> 1. 一个简单的热身程序</h3>
+<p>返回一个5×5的矩阵</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A = <span class="built_in">eye</span>(<span class="number">5</span>);</span><br></pre></td></tr></table></figure>
+<p>octave输出如下：</p>
+<p><img src="/images/article/ai/ex1-1.png" alt="五×五矩阵" title="五×五矩阵" /></p>
+<h3 id="2-单变量线性回归"><a class="markdownIt-Anchor" href="#2-单变量线性回归"></a> 2. 单变量线性回归</h3>
+<p><strong>注释：</strong><br />
+此程序的入口程序是ex1.m<br />
+在本练习的这一部分中，将使用一个变量实现线性回归来预测一辆食品卡车的利润。假设一家连锁餐厅的首席执行官，正在考虑在不同的城市开设一家新餐厅。这个连锁店已经在各个城市有了卡车，通过计算可以得到城市的利润和人口数据。</p>
+<h4 id="21-绘制数据"><a class="markdownIt-Anchor" href="#21-绘制数据"></a> 2.1 绘制数据</h4>
+<p>需要补全的是plotData.m这个文件<br />
+程序如下：</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">plot</span>(x, y, <span class="string">'rx'</span>, <span class="string">'MarkerSize'</span>, <span class="number">10</span>); <span class="comment">% 绘制数据</span></span><br><span class="line">ylabel(<span class="string">'Profit in $10,000s'</span>); <span class="comment">% y轴的文字提示 </span></span><br><span class="line">xlabel(<span class="string">'Population of City in 10,000s'</span>); <span class="comment">% x轴的文字提示</span></span><br></pre></td></tr></table></figure>
+<p>运行得到如下图：<br />
+<img src="/images/article/ai/ex1-2.png" alt="数据离散图" title="数据离散图" /></p>
+<h4 id="22-梯度下降"><a class="markdownIt-Anchor" href="#22-梯度下降"></a> 2.2 梯度下降</h4>
+<h5 id="221-更新方程"><a class="markdownIt-Anchor" href="#221-更新方程"></a> 2.2.1 更新方程</h5>
+<p>代价函数：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>J</mi><mo stretchy="false">(</mo><mi>θ</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>m</mi></mrow></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><mrow><mo stretchy="false">(</mo><msub><mi>h</mi><mi>θ</mi></msub><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow><mo>−</mo><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">J(\theta) = \frac{1}{2m} \sum^{m}_{i=1}{(h_\theta(x^{(i)})}-y^{(i)})^2 
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.09618em;">J</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.929066em;vertical-align:-1.277669em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span><span class="mord mathdefault">m</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.6513970000000002em;"><span style="top:-1.872331em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3000050000000005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">m</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.277669em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathdefault mtight">i</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span><span class="mclose">)</span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.188em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathdefault mtight">i</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span></p>
+<p>线性方程：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>h</mi><mi>θ</mi></msub><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><msup><mi>θ</mi><mi>T</mi></msup><mi>x</mi><mo>=</mo><msub><mi>θ</mi><mn>0</mn></msub><mo>+</mo><msub><mi>θ</mi><mn>1</mn></msub><msub><mi>x</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">h_\theta(x) = \theta^Tx = \theta_0 + \theta_1x_1 
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8913309999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8913309999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span></span></span></span>更新方程：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>θ</mi><mi>j</mi></msub><mo>:</mo><mo>=</mo><msub><mi>θ</mi><mi>j</mi></msub><mo>−</mo><mi>α</mi><mfrac><mi>δ</mi><mrow><mi>δ</mi><msub><mi>θ</mi><mi>j</mi></msub></mrow></mfrac><mi>J</mi><mo stretchy="false">(</mo><msub><mi>θ</mi><mn>0</mn></msub><mo separator="true">,</mo><msub><mi>θ</mi><mn>1</mn></msub><mo stretchy="false">)</mo><mo>=</mo><msub><mi>θ</mi><mi>j</mi></msub><mo>−</mo><mi>α</mi><mfrac><mn>1</mn><mi>m</mi></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><mrow><mo stretchy="false">(</mo><msub><mi>h</mi><mi>θ</mi></msub><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow><mo>−</mo><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo><msubsup><mi>x</mi><mi>j</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msubsup></mrow><annotation encoding="application/x-tex">\theta_j := \theta_j - \alpha \frac{\delta}{\delta\theta_j} J(\theta_0,\theta_1) = \theta_j - \alpha \frac{1}{m} \sum^{m}_{i=1}{(h_\theta(x^{(i)})}-y^{(i)})x ^{(i)}_j
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.980548em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">:</span></span><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.980548em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.343548em;vertical-align:-0.972108em;"></span><span class="mord mathdefault" style="margin-right:0.0037em;">α</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.37144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03785em;">δ</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03785em;">δ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.972108em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord mathdefault" style="margin-right:0.09618em;">J</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.980548em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.929066em;vertical-align:-1.277669em;"></span><span class="mord mathdefault" style="margin-right:0.0037em;">α</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">m</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.6513970000000002em;"><span style="top:-1.872331em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3000050000000005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">m</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.277669em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathdefault mtight">i</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span><span class="mclose">)</span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.4577719999999998em;vertical-align:-0.412972em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathdefault mtight">i</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0448em;"><span style="top:-2.4231360000000004em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span><span style="top:-3.2198em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathdefault mtight">i</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.412972em;"><span></span></span></span></span></span></span></span></span></span></span></p>
+<h4 id="23-代码实现"><a class="markdownIt-Anchor" href="#23-代码实现"></a> 2.3 代码实现</h4>
+<p>对X,theta,迭代次数，学习率做以下初始化：</p>
+ <figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">X = [<span class="built_in">ones</span>(m, <span class="number">1</span>), data(:,<span class="number">1</span>)]; <span class="comment">% 增加一列 1 到 x </span></span><br><span class="line">theta = <span class="built_in">zeros</span>(<span class="number">2</span>, <span class="number">1</span>); <span class="comment">% 初始化theta为 0</span></span><br><span class="line">iterations = <span class="number">1500</span>; alpha = <span class="number">0.01</span>; <span class="comment">%求最小值的迭代次数为1500</span></span><br></pre></td></tr></table></figure>
+<h5 id="231-求代价函数jtheta"><a class="markdownIt-Anchor" href="#231-求代价函数jtheta"></a> 2.3.1 求代价函数<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>j</mi><mo stretchy="false">(</mo><mi>θ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">j(\theta)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="mclose">)</span></span></span></span></h5>
+<p>computeCost.m文件添加以下代码：</p>
+  <figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">for</span> <span class="built_in">i</span> = <span class="number">1</span>:m</span><br><span class="line">   J = J+(X(<span class="built_in">i</span>,:)*theta-y(<span class="built_in">i</span>))^<span class="number">2</span>;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">J = J/(<span class="number">2</span>*m);</span><br></pre></td></tr></table></figure>
+<h5 id="232-实现梯度下降"><a class="markdownIt-Anchor" href="#232-实现梯度下降"></a> 2.3.2 实现梯度下降</h5>
+<p>gradientDescent.m文件添加以下代码</p>
+  <figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sum1 = <span class="number">0</span>;<span class="comment">%初始化为0</span></span><br><span class="line">sum2 = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span> = <span class="number">1</span>:m <span class="comment">%循环计算偏导数</span></span><br><span class="line">    sum1 = sum1+(X(<span class="built_in">i</span>,:)*theta-y(<span class="built_in">i</span>));</span><br><span class="line">    sum2 = sum2+(X(<span class="built_in">i</span>,:)*theta-y(<span class="built_in">i</span>))*X(<span class="built_in">i</span>,<span class="number">2</span>);</span><br><span class="line"><span class="keyword">end</span> <span class="comment">%还在一个大循环里面，循环更新</span></span><br><span class="line">theta(<span class="number">1</span>) = theta(<span class="number">1</span>)-alpha/m*sum1;</span><br><span class="line">theta(<span class="number">2</span>) = theta(<span class="number">2</span>)-alpha/m*sum2;</span><br></pre></td></tr></table></figure>
+<p>得到下图：<br />
+<img src="/images/article/ai/ex1-3.png" alt="梯度下降" title="梯度下降" /></p>
+<h5 id="232-可视化-jtheta"><a class="markdownIt-Anchor" href="#232-可视化-jtheta"></a> 2.3.2 可视化 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>J</mi><mo stretchy="false">(</mo><mi>θ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">J(\theta)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.09618em;">J</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="mclose">)</span></span></span></span></h5>
+<p>此代码在作业自带源代码中<br />
+执行后显示如下两个图：<br />
+<img src="/images/article/ai/ex1-4.png" alt="三维面" title="三维面" /><br />
+<img src="/images/article/ai/ex1-5.png" alt="等高线" title="等高线" /></p>
+<h2 id="python实现"><a class="markdownIt-Anchor" href="#python实现"></a> <strong>python实现</strong></h2>
+<h3 id="1"><a class="markdownIt-Anchor" href="#1"></a> 1.</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># coding: utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># # 机器学习练习 1 - 线性回归</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 这个是另一位大牛写的，作业内容在根目录： [作业文件](ex1.pdf)</span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line"><span class="comment"># 代码修改并注释：黄海广，haiguang2000@qq.com</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ## 单变量线性回归</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[1]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[2]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">path = <span class="string">'ex1data1.txt'</span></span><br><span class="line">data = pd.read_csv(path, header=<span class="literal">None</span>, names=[<span class="string">'Population'</span>, <span class="string">'Profit'</span>])</span><br><span class="line">data.head()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[3]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">data.describe()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 看下数据长什么样子</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[4]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">data.plot(kind=<span class="string">'scatter'</span>, x=<span class="string">'Population'</span>, y=<span class="string">'Profit'</span>, figsize=(<span class="number">12</span>, <span class="number">8</span>))</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 现在让我们使用梯度下降来实现线性回归，以最小化成本函数。 以下代码示例中实现的方程在“练习”文件夹中的“ex1.pdf”中有详细说明。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 首先，我们将创建一个以参数θ为特征函数的代价函数</span></span><br><span class="line"><span class="comment">#$$ J\left( \theta  \right)=\frac&#123;1&#125;&#123;2m&#125;\sum\limits_&#123;i=1&#125;^&#123;m&#125;&#123;&#123;&#123;\left( &#123;&#123;h&#125;_&#123;\theta &#125;&#125;\left( &#123;&#123;x&#125;^&#123;(i)&#125;&#125; \right)-&#123;&#123;y&#125;^&#123;(i)&#125;&#125; \right)&#125;^&#123;2&#125;&#125;&#125; $$</span></span><br><span class="line"><span class="comment"># 其中：\\[&#123;&#123;h&#125;_&#123;\theta &#125;&#125;\left( x \right)=&#123;&#123;\theta &#125;^&#123;T&#125;&#125;X=&#123;&#123;\theta &#125;_&#123;0&#125;&#125;&#123;&#123;x&#125;_&#123;0&#125;&#125;+&#123;&#123;\theta &#125;_&#123;1&#125;&#125;&#123;&#123;x&#125;_&#123;1&#125;&#125;+&#123;&#123;\theta &#125;_&#123;2&#125;&#125;&#123;&#123;x&#125;_&#123;2&#125;&#125;+...+&#123;&#123;\theta &#125;_&#123;n&#125;&#125;&#123;&#123;x&#125;_&#123;n&#125;&#125;\\]</span></span><br><span class="line"><span class="comment"># In[5]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">computeCost</span><span class="params">(X, y, theta)</span>:</span></span><br><span class="line">    inner = np.power(((X * theta.T) - y), <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> np.sum(inner) / (<span class="number">2</span> * len(X))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 让我们在训练集中添加一列，以便我们可以使用向量化的解决方案来计算代价和梯度。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[6]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">data.insert(<span class="number">0</span>, <span class="string">'Ones'</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 现在我们来做一些变量初始化。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[7]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># set X (training data) and y (target variable)</span></span><br><span class="line">cols = data.shape[<span class="number">1</span>]</span><br><span class="line">X = data.iloc[:,<span class="number">0</span>:cols<span class="number">-1</span>]<span class="comment">#X是所有行，去掉最后一列</span></span><br><span class="line">y = data.iloc[:,cols<span class="number">-1</span>:cols]<span class="comment">#X是所有行，最后一列</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 观察下 X (训练集) and y (目标变量)是否正确.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[8]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">X.head()<span class="comment">#head()是观察前5行</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[9]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">y.head()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 代价函数是应该是numpy矩阵，所以我们需要转换X和Y，然后才能使用它们。 我们还需要初始化theta。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[10]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">X = np.matrix(X.values)</span><br><span class="line">y = np.matrix(y.values)</span><br><span class="line">theta = np.matrix(np.array([<span class="number">0</span>,<span class="number">0</span>]))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># theta 是一个(1,2)矩阵</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[11]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">theta</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 看下维度</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[12]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">X.shape, theta.shape, y.shape</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算代价函数 (theta初始值为0).</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[13]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">computeCost(X, y, theta)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># # batch gradient decent（批量梯度下降）</span></span><br><span class="line"><span class="comment"># $$&#123;&#123;\theta &#125;_&#123;j&#125;&#125;:=&#123;&#123;\theta &#125;_&#123;j&#125;&#125;-\alpha \frac&#123;\partial &#125;&#123;\partial &#123;&#123;\theta &#125;_&#123;j&#125;&#125;&#125;J\left( \theta  \right)$$</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[14]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gradientDescent</span><span class="params">(X, y, theta, alpha, iters)</span>:</span></span><br><span class="line">    temp = np.matrix(np.zeros(theta.shape))</span><br><span class="line">    parameters = int(theta.ravel().shape[<span class="number">1</span>])</span><br><span class="line">    cost = np.zeros(iters)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(iters):</span><br><span class="line">        error = (X * theta.T) - y</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(parameters):</span><br><span class="line">            term = np.multiply(error, X[:,j])</span><br><span class="line">            temp[<span class="number">0</span>,j] = theta[<span class="number">0</span>,j] - ((alpha / len(X)) * np.sum(term))</span><br><span class="line"></span><br><span class="line">        theta = temp</span><br><span class="line">        cost[i] = computeCost(X, y, theta)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> theta, cost</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化一些附加变量 - 学习速率α和要执行的迭代次数。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[15]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">alpha = <span class="number">0.01</span></span><br><span class="line">iters = <span class="number">1000</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 现在让我们运行梯度下降算法来将我们的参数θ适合于训练集。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[16]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">g, cost = gradientDescent(X, y, theta, alpha, iters)</span><br><span class="line">g</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 最后，我们可以使用我们拟合的参数计算训练模型的代价函数（误差）。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[17]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">computeCost(X, y, g)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 现在我们来绘制线性模型以及数据，直观地看出它的拟合。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[18]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">x = np.linspace(data.Population.min(), data.Population.max(), <span class="number">100</span>)</span><br><span class="line">f = g[<span class="number">0</span>, <span class="number">0</span>] + (g[<span class="number">0</span>, <span class="number">1</span>] * x)</span><br><span class="line"></span><br><span class="line">fig, ax = plt.subplots(figsize=(<span class="number">12</span>,<span class="number">8</span>))</span><br><span class="line">ax.plot(x, f, <span class="string">'r'</span>, label=<span class="string">'Prediction'</span>)</span><br><span class="line">ax.scatter(data.Population, data.Profit, label=<span class="string">'Traning Data'</span>)</span><br><span class="line">ax.legend(loc=<span class="number">2</span>)</span><br><span class="line">ax.set_xlabel(<span class="string">'Population'</span>)</span><br><span class="line">ax.set_ylabel(<span class="string">'Profit'</span>)</span><br><span class="line">ax.set_title(<span class="string">'Predicted Profit vs. Population Size'</span>)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 由于梯度方程式函数也在每个训练迭代中输出一个代价的向量，所以我们也可以绘制。 请注意，代价总是降低 - 这是凸优化问题的一个例子。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[19]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">fig, ax = plt.subplots(figsize=(<span class="number">12</span>,<span class="number">8</span>))</span><br><span class="line">ax.plot(np.arange(iters), cost, <span class="string">'r'</span>)</span><br><span class="line">ax.set_xlabel(<span class="string">'Iterations'</span>)</span><br><span class="line">ax.set_ylabel(<span class="string">'Cost'</span>)</span><br><span class="line">ax.set_title(<span class="string">'Error vs. Training Epoch'</span>)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># ## 多变量线性回归</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 练习1还包括一个房屋价格数据集，其中有2个变量（房子的大小，卧室的数量）和目标（房子的价格）。 我们使用我们已经应用的技术来分析数据集。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[20]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">path =  <span class="string">'ex1data2.txt'</span></span><br><span class="line">data2 = pd.read_csv(path, header=<span class="literal">None</span>, names=[<span class="string">'Size'</span>, <span class="string">'Bedrooms'</span>, <span class="string">'Price'</span>])</span><br><span class="line">data2.head()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 对于此任务，我们添加了另一个预处理步骤 - 特征归一化。 这个对于pandas来说很简单</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[21]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">data2 = (data2 - data2.mean()) / data2.std()</span><br><span class="line">data2.head()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 现在我们重复第1部分的预处理步骤，并对新数据集运行线性回归程序。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[22]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># add ones column</span></span><br><span class="line">data2.insert(<span class="number">0</span>, <span class="string">'Ones'</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># set X (training data) and y (target variable)</span></span><br><span class="line">cols = data2.shape[<span class="number">1</span>]</span><br><span class="line">X2 = data2.iloc[:,<span class="number">0</span>:cols<span class="number">-1</span>]</span><br><span class="line">y2 = data2.iloc[:,cols<span class="number">-1</span>:cols]</span><br><span class="line"></span><br><span class="line"><span class="comment"># convert to matrices and initialize theta</span></span><br><span class="line">X2 = np.matrix(X2.values)</span><br><span class="line">y2 = np.matrix(y2.values)</span><br><span class="line">theta2 = np.matrix(np.array([<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]))</span><br><span class="line"></span><br><span class="line"><span class="comment"># perform linear regression on the data set</span></span><br><span class="line">g2, cost2 = gradientDescent(X2, y2, theta2, alpha, iters)</span><br><span class="line"></span><br><span class="line"><span class="comment"># get the cost (error) of the model</span></span><br><span class="line">computeCost(X2, y2, g2)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 我们也可以快速查看这一个的训练进程。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[23]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">fig, ax = plt.subplots(figsize=(<span class="number">12</span>,<span class="number">8</span>))</span><br><span class="line">ax.plot(np.arange(iters), cost2, <span class="string">'r'</span>)</span><br><span class="line">ax.set_xlabel(<span class="string">'Iterations'</span>)</span><br><span class="line">ax.set_ylabel(<span class="string">'Cost'</span>)</span><br><span class="line">ax.set_title(<span class="string">'Error vs. Training Epoch'</span>)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 我们也可以使用scikit-learn的线性回归函数，而不是从头开始实现这些算法。 我们将scikit-learn的线性回归算法应用于第1部分的数据，并看看它的表现。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[25]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> linear_model</span><br><span class="line">model = linear_model.LinearRegression()</span><br><span class="line">model.fit(X, y)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># scikit-learn model的预测表现</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[26]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">x = np.array(X[:, <span class="number">1</span>].A1)</span><br><span class="line">f = model.predict(X).flatten()</span><br><span class="line"></span><br><span class="line">fig, ax = plt.subplots(figsize=(<span class="number">12</span>,<span class="number">8</span>))</span><br><span class="line">ax.plot(x, f, <span class="string">'r'</span>, label=<span class="string">'Prediction'</span>)</span><br><span class="line">ax.scatter(data.Population, data.Profit, label=<span class="string">'Traning Data'</span>)</span><br><span class="line">ax.legend(loc=<span class="number">2</span>)</span><br><span class="line">ax.set_xlabel(<span class="string">'Population'</span>)</span><br><span class="line">ax.set_ylabel(<span class="string">'Profit'</span>)</span><br><span class="line">ax.set_title(<span class="string">'Predicted Profit vs. Population Size'</span>)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># # 4. normal equation（正规方程）</span></span><br><span class="line"><span class="comment"># 正规方程是通过求解下面的方程来找出使得代价函数最小的参数的：$\frac&#123;\partial &#125;&#123;\partial &#123;&#123;\theta &#125;_&#123;j&#125;&#125;&#125;J\left( &#123;&#123;\theta &#125;_&#123;j&#125;&#125; \right)=0$ 。</span></span><br><span class="line"><span class="comment">#  假设我们的训练集特征矩阵为 X（包含了$&#123;&#123;x&#125;_&#123;0&#125;&#125;=1$）并且我们的训练集结果为向量 y，则利用正规方程解出向量 $\theta =&#123;&#123;\left( &#123;&#123;X&#125;^&#123;T&#125;&#125;X \right)&#125;^&#123;-1&#125;&#125;&#123;&#123;X&#125;^&#123;T&#125;&#125;y$ 。</span></span><br><span class="line"><span class="comment"># 上标T代表矩阵转置，上标-1 代表矩阵的逆。设矩阵$A=&#123;&#123;X&#125;^&#123;T&#125;&#125;X$，则：$&#123;&#123;\left( &#123;&#123;X&#125;^&#123;T&#125;&#125;X \right)&#125;^&#123;-1&#125;&#125;=&#123;&#123;A&#125;^&#123;-1&#125;&#125;$</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># 梯度下降与正规方程的比较：</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># 梯度下降：需要选择学习率α，需要多次迭代，当特征数量n大时也能较好适用，适用于各种类型的模型</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># 正规方程：不需要选择学习率α，一次计算得出，需要计算$&#123;&#123;\left( &#123;&#123;X&#125;^&#123;T&#125;&#125;X \right)&#125;^&#123;-1&#125;&#125;$，如果特征数量n较大则运算代价大，因为矩阵逆的计算时间复杂度为$O(n3)$，通常来说当$n$小于10000 时还是可以接受的，只适用于线性模型，不适合逻辑回归模型等其他模型</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[27]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 正规方程</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">normalEqn</span><span class="params">(X, y)</span>:</span></span><br><span class="line">    theta = np.linalg.inv(X.T@X)@X.T@y<span class="comment">#X.T@X等价于X.T.dot(X)</span></span><br><span class="line">    <span class="keyword">return</span> theta</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[28]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">final_theta2=normalEqn(X, y)<span class="comment">#感觉和批量梯度下降的theta的值有点差距</span></span><br><span class="line">final_theta2</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[29]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#梯度下降得到的结果是matrix([[-3.24140214,  1.1272942 ]])</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在练习2中，我们将看看分类问题的逻辑回归。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[ ]:</span></span><br></pre></td></tr></table></figure>
+<h3 id="2"><a class="markdownIt-Anchor" href="#2"></a> 2.</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># coding: utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># # linear regreesion（线性回归）</span></span><br><span class="line"><span class="comment"># 注意：python版本为3.6，</span></span><br><span class="line"><span class="comment"># 安装TensorFlow的方法：pip install tensorflow</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[1]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line">sns.set(context=<span class="string">"notebook"</span>, style=<span class="string">"whitegrid"</span>, palette=<span class="string">"dark"</span>)</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[2]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">df = pd.read_csv(<span class="string">'ex1data1.txt'</span>, names=[<span class="string">'population'</span>, <span class="string">'profit'</span>])<span class="comment">#读取数据并赋予列名</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[3]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">df.head()<span class="comment">#看前五行</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[4]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">df.info()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># ***</span></span><br><span class="line"><span class="comment"># # 看下原始数据</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[5]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sns.lmplot(<span class="string">'population'</span>, <span class="string">'profit'</span>, df, size=<span class="number">6</span>, fit_reg=<span class="literal">False</span>)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[6]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_X</span><span class="params">(df)</span>:</span><span class="comment">#读取特征</span></span><br><span class="line"><span class="comment">#     """</span></span><br><span class="line"><span class="comment">#     use concat to add intersect feature to avoid side effect</span></span><br><span class="line"><span class="comment">#     not efficient for big dataset though</span></span><br><span class="line"><span class="comment">#     """</span></span><br><span class="line">    ones = pd.DataFrame(&#123;<span class="string">'ones'</span>: np.ones(len(df))&#125;)<span class="comment">#ones是m行1列的dataframe</span></span><br><span class="line">    data = pd.concat([ones, df], axis=<span class="number">1</span>)  <span class="comment"># 合并数据，根据列合并</span></span><br><span class="line">    <span class="keyword">return</span> data.iloc[:, :<span class="number">-1</span>].as_matrix()  <span class="comment"># 这个操作返回 ndarray,不是矩阵</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_y</span><span class="params">(df)</span>:</span><span class="comment">#读取标签</span></span><br><span class="line"><span class="comment">#     '''assume the last column is the target'''</span></span><br><span class="line">    <span class="keyword">return</span> np.array(df.iloc[:, <span class="number">-1</span>])<span class="comment">#df.iloc[:, -1]是指df的最后一列</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">normalize_feature</span><span class="params">(df)</span>:</span></span><br><span class="line"><span class="comment">#     """Applies function along input axis(default 0) of DataFrame."""</span></span><br><span class="line">    <span class="keyword">return</span> df.apply(<span class="keyword">lambda</span> column: (column - column.mean()) / column.std())<span class="comment">#特征缩放</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 多变量的假设 h 表示为：\\[&#123;&#123;h&#125;_&#123;\theta &#125;&#125;\left( x \right)=&#123;&#123;\theta &#125;_&#123;0&#125;&#125;+&#123;&#123;\theta &#125;_&#123;1&#125;&#125;&#123;&#123;x&#125;_&#123;1&#125;&#125;+&#123;&#123;\theta &#125;_&#123;2&#125;&#125;&#123;&#123;x&#125;_&#123;2&#125;&#125;+...+&#123;&#123;\theta &#125;_&#123;n&#125;&#125;&#123;&#123;x&#125;_&#123;n&#125;&#125;\\] </span></span><br><span class="line"><span class="comment"># 这个公式中有n+1个参数和n个变量，为了使得公式能够简化一些，引入$&#123;&#123;x&#125;_&#123;0&#125;&#125;=1$，则公式转化为：  </span></span><br><span class="line"><span class="comment"># 此时模型中的参数是一个n+1维的向量，任何一个训练实例也都是n+1维的向量，特征矩阵X的维度是 m*(n+1)。 因此公式可以简化为：$&#123;&#123;h&#125;_&#123;\theta &#125;&#125;\left( x \right)=&#123;&#123;\theta &#125;^&#123;T&#125;&#125;X$，其中上标T代表矩阵转置。</span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[7]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">linear_regression</span><span class="params">(X_data, y_data, alpha, epoch, optimizer=tf.train.GradientDescentOptimizer)</span>:</span><span class="comment"># 这个函数是旧金山的一个大神Lucas Shen写的</span></span><br><span class="line">      <span class="comment"># placeholder for graph input</span></span><br><span class="line">    X = tf.placeholder(tf.float32, shape=X_data.shape)</span><br><span class="line">    y = tf.placeholder(tf.float32, shape=y_data.shape)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># construct the graph</span></span><br><span class="line">    <span class="keyword">with</span> tf.variable_scope(<span class="string">'linear-regression'</span>):</span><br><span class="line">        W = tf.get_variable(<span class="string">"weights"</span>,</span><br><span class="line">                            (X_data.shape[<span class="number">1</span>], <span class="number">1</span>),</span><br><span class="line">                            initializer=tf.constant_initializer())  <span class="comment"># n*1</span></span><br><span class="line"></span><br><span class="line">        y_pred = tf.matmul(X, W)  <span class="comment"># m*n @ n*1 -&gt; m*1</span></span><br><span class="line"></span><br><span class="line">        loss = <span class="number">1</span> / (<span class="number">2</span> * len(X_data)) * tf.matmul((y_pred - y), (y_pred - y), transpose_a=<span class="literal">True</span>)  <span class="comment"># (m*1).T @ m*1 = 1*1</span></span><br><span class="line"></span><br><span class="line">    opt = optimizer(learning_rate=alpha)</span><br><span class="line">    opt_operation = opt.minimize(loss)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># run the session</span></span><br><span class="line">    <span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">        sess.run(tf.global_variables_initializer())</span><br><span class="line">        loss_data = []</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(epoch):</span><br><span class="line">            _, loss_val, W_val = sess.run([opt_operation, loss, W], feed_dict=&#123;X: X_data, y: y_data&#125;)</span><br><span class="line">            loss_data.append(loss_val[<span class="number">0</span>, <span class="number">0</span>])  <span class="comment"># because every loss_val is 1*1 ndarray</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> len(loss_data) &gt; <span class="number">1</span> <span class="keyword">and</span> np.abs(loss_data[<span class="number">-1</span>] - loss_data[<span class="number">-2</span>]) &lt; <span class="number">10</span> ** <span class="number">-9</span>:  <span class="comment"># early break when it's converged</span></span><br><span class="line">                <span class="comment"># print('Converged at epoch &#123;&#125;'.format(i))</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># clear the graph</span></span><br><span class="line">    tf.reset_default_graph()</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">'loss'</span>: loss_data, <span class="string">'parameters'</span>: W_val&#125;  <span class="comment"># just want to return in row vector format</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[8]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">data = pd.read_csv(<span class="string">'ex1data1.txt'</span>, names=[<span class="string">'population'</span>, <span class="string">'profit'</span>])<span class="comment">#读取数据，并赋予列名</span></span><br><span class="line"></span><br><span class="line">data.head()<span class="comment">#看下数据前5行</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># # 计算代价函数</span></span><br><span class="line"><span class="comment"># $$J\left( \theta  \right)=\frac&#123;1&#125;&#123;2m&#125;\sum\limits_&#123;i=1&#125;^&#123;m&#125;&#123;&#123;&#123;\left( &#123;&#123;h&#125;_&#123;\theta &#125;&#125;\left( &#123;&#123;x&#125;^&#123;(i)&#125;&#125; \right)-&#123;&#123;y&#125;^&#123;(i)&#125;&#125; \right)&#125;^&#123;2&#125;&#125;&#125;$$</span></span><br><span class="line"><span class="comment"># 其中：\\[&#123;&#123;h&#125;_&#123;\theta &#125;&#125;\left( x \right)=&#123;&#123;\theta &#125;^&#123;T&#125;&#125;X=&#123;&#123;\theta &#125;_&#123;0&#125;&#125;&#123;&#123;x&#125;_&#123;0&#125;&#125;+&#123;&#123;\theta &#125;_&#123;1&#125;&#125;&#123;&#123;x&#125;_&#123;1&#125;&#125;+&#123;&#123;\theta &#125;_&#123;2&#125;&#125;&#123;&#123;x&#125;_&#123;2&#125;&#125;+...+&#123;&#123;\theta &#125;_&#123;n&#125;&#125;&#123;&#123;x&#125;_&#123;n&#125;&#125;\\] </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[9]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">X = get_X(data)</span><br><span class="line">print(X.shape, type(X))</span><br><span class="line"></span><br><span class="line">y = get_y(data)</span><br><span class="line">print(y.shape, type(y))</span><br><span class="line"><span class="comment">#看下数据维度</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[10]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">theta = np.zeros(X.shape[<span class="number">1</span>])<span class="comment">#X.shape[1]=2,代表特征数n</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[11]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lr_cost</span><span class="params">(theta, X, y)</span>:</span></span><br><span class="line"><span class="comment">#     """</span></span><br><span class="line"><span class="comment">#     X: R(m*n), m 样本数, n 特征数</span></span><br><span class="line"><span class="comment">#     y: R(m)</span></span><br><span class="line"><span class="comment">#     theta : R(n), 线性回归的参数</span></span><br><span class="line"><span class="comment">#     """</span></span><br><span class="line">    m = X.shape[<span class="number">0</span>]<span class="comment">#m为样本数</span></span><br><span class="line"></span><br><span class="line">    inner = X @ theta - y  <span class="comment"># R(m*1)，X @ theta等价于X.dot(theta)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 1*m @ m*1 = 1*1 in matrix multiplication</span></span><br><span class="line">    <span class="comment"># but you know numpy didn't do transpose in 1d array, so here is just a</span></span><br><span class="line">    <span class="comment"># vector inner product to itselves</span></span><br><span class="line">    square_sum = inner.T @ inner</span><br><span class="line">    cost = square_sum / (<span class="number">2</span> * m)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> cost</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[12]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">lr_cost(theta, X, y)<span class="comment">#返回theta的值</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># # batch gradient decent（批量梯度下降）</span></span><br><span class="line"><span class="comment"># $$&#123;&#123;\theta &#125;_&#123;j&#125;&#125;:=&#123;&#123;\theta &#125;_&#123;j&#125;&#125;-\alpha \frac&#123;\partial &#125;&#123;\partial &#123;&#123;\theta &#125;_&#123;j&#125;&#125;&#125;J\left( \theta  \right)$$</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[13]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gradient</span><span class="params">(theta, X, y)</span>:</span></span><br><span class="line">    m = X.shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    inner = X.T @ (X @ theta - y)  <span class="comment"># (m,n).T @ (m, 1) -&gt; (n, 1)，X @ theta等价于X.dot(theta)</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> inner / m</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[14]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">batch_gradient_decent</span><span class="params">(theta, X, y, epoch, alpha=<span class="number">0.01</span>)</span>:</span></span><br><span class="line"><span class="comment">#   拟合线性回归，返回参数和代价</span></span><br><span class="line"><span class="comment">#     epoch: 批处理的轮数</span></span><br><span class="line"><span class="comment">#     """</span></span><br><span class="line">    cost_data = [lr_cost(theta, X, y)]</span><br><span class="line">    _theta = theta.copy()  <span class="comment"># 拷贝一份，不和原来的theta混淆</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> range(epoch):</span><br><span class="line">        _theta = _theta - alpha * gradient(_theta, X, y)</span><br><span class="line">        cost_data.append(lr_cost(_theta, X, y))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> _theta, cost_data</span><br><span class="line"><span class="comment">#批量梯度下降函数</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[15]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">epoch = <span class="number">500</span></span><br><span class="line">final_theta, cost_data = batch_gradient_decent(theta, X, y, epoch)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[16]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">final_theta</span><br><span class="line"><span class="comment">#最终的theta</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[17]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">cost_data</span><br><span class="line"><span class="comment"># 看下代价数据</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[18]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算最终的代价</span></span><br><span class="line">lr_cost(final_theta, X, y)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># # visualize cost data（代价数据可视化）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[19]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ax = sns.tsplot(cost_data, time=np.arange(epoch+<span class="number">1</span>))</span><br><span class="line">ax.set_xlabel(<span class="string">'epoch'</span>)</span><br><span class="line">ax.set_ylabel(<span class="string">'cost'</span>)</span><br><span class="line">plt.show()</span><br><span class="line"><span class="comment">#可以看到从第二轮代价数据变换很大，接下来平稳了</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[20]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">b = final_theta[<span class="number">0</span>] <span class="comment"># intercept，Y轴上的截距</span></span><br><span class="line">m = final_theta[<span class="number">1</span>] <span class="comment"># slope，斜率</span></span><br><span class="line"></span><br><span class="line">plt.scatter(data.population, data.profit, label=<span class="string">"Training data"</span>)</span><br><span class="line">plt.plot(data.population, data.population*m + b, label=<span class="string">"Prediction"</span>)</span><br><span class="line">plt.legend(loc=<span class="number">2</span>)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># # 3- 选修章节</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[21]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">raw_data = pd.read_csv(<span class="string">'ex1data2.txt'</span>, names=[<span class="string">'square'</span>, <span class="string">'bedrooms'</span>, <span class="string">'price'</span>])</span><br><span class="line">raw_data.head()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># # 标准化数据</span></span><br><span class="line"><span class="comment"># 最简单的方法是令：</span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line"><span class="comment">#  </span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line"><span class="comment"># 其中  是平均值，sn 是标准差。</span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[22]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">normalize_feature</span><span class="params">(df)</span>:</span></span><br><span class="line"><span class="comment">#     """Applies function along input axis(default 0) of DataFrame."""</span></span><br><span class="line">    <span class="keyword">return</span> df.apply(<span class="keyword">lambda</span> column: (column - column.mean()) / column.std())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[23]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">data = normalize_feature(raw_data)</span><br><span class="line">data.head()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># # 2. multi-var batch gradient decent（多变量批量梯度下降）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[24]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">X = get_X(data)</span><br><span class="line">print(X.shape, type(X))</span><br><span class="line"></span><br><span class="line">y = get_y(data)</span><br><span class="line">print(y.shape, type(y))<span class="comment">#看下数据的维度和类型</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[25]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">alpha = <span class="number">0.01</span><span class="comment">#学习率</span></span><br><span class="line">theta = np.zeros(X.shape[<span class="number">1</span>])<span class="comment">#X.shape[1]：特征数n</span></span><br><span class="line">epoch = <span class="number">500</span><span class="comment">#轮数</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[26]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">final_theta, cost_data = batch_gradient_decent(theta, X, y, epoch, alpha=alpha)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[27]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sns.tsplot(time=np.arange(len(cost_data)), data = cost_data)</span><br><span class="line">plt.xlabel(<span class="string">'epoch'</span>, fontsize=<span class="number">18</span>)</span><br><span class="line">plt.ylabel(<span class="string">'cost'</span>, fontsize=<span class="number">18</span>)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[28]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">final_theta</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># # 3. learning rate（学习率）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[29]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">base = np.logspace(<span class="number">-1</span>, <span class="number">-5</span>, num=<span class="number">4</span>)</span><br><span class="line">candidate = np.sort(np.concatenate((base, base*<span class="number">3</span>)))</span><br><span class="line">print(candidate)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[30]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">epoch=<span class="number">50</span></span><br><span class="line"></span><br><span class="line">fig, ax = plt.subplots(figsize=(<span class="number">16</span>, <span class="number">9</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> alpha <span class="keyword">in</span> candidate:</span><br><span class="line">    _, cost_data = batch_gradient_decent(theta, X, y, epoch, alpha=alpha)</span><br><span class="line">    ax.plot(np.arange(epoch+<span class="number">1</span>), cost_data, label=alpha)</span><br><span class="line"></span><br><span class="line">ax.set_xlabel(<span class="string">'epoch'</span>, fontsize=<span class="number">18</span>)</span><br><span class="line">ax.set_ylabel(<span class="string">'cost'</span>, fontsize=<span class="number">18</span>)</span><br><span class="line">ax.legend(bbox_to_anchor=(<span class="number">1.05</span>, <span class="number">1</span>), loc=<span class="number">2</span>, borderaxespad=<span class="number">0.</span>)</span><br><span class="line">ax.set_title(<span class="string">'learning rate'</span>, fontsize=<span class="number">18</span>)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># # 4. normal equation（正规方程）</span></span><br><span class="line"><span class="comment"># 正规方程是通过求解下面的方程来找出使得代价函数最小的参数的：$\frac&#123;\partial &#125;&#123;\partial &#123;&#123;\theta &#125;_&#123;j&#125;&#125;&#125;J\left( &#123;&#123;\theta &#125;_&#123;j&#125;&#125; \right)=0$ 。</span></span><br><span class="line"><span class="comment">#  假设我们的训练集特征矩阵为 X（包含了$&#123;&#123;x&#125;_&#123;0&#125;&#125;=1$）并且我们的训练集结果为向量 y，则利用正规方程解出向量 $\theta =&#123;&#123;\left( &#123;&#123;X&#125;^&#123;T&#125;&#125;X \right)&#125;^&#123;-1&#125;&#125;&#123;&#123;X&#125;^&#123;T&#125;&#125;y$ 。</span></span><br><span class="line"><span class="comment"># 上标T代表矩阵转置，上标-1 代表矩阵的逆。设矩阵$A=&#123;&#123;X&#125;^&#123;T&#125;&#125;X$，则：$&#123;&#123;\left( &#123;&#123;X&#125;^&#123;T&#125;&#125;X \right)&#125;^&#123;-1&#125;&#125;=&#123;&#123;A&#125;^&#123;-1&#125;&#125;$</span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line"><span class="comment"># 梯度下降与正规方程的比较：</span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line"><span class="comment"># 梯度下降：需要选择学习率α，需要多次迭代，当特征数量n大时也能较好适用，适用于各种类型的模型	</span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line"><span class="comment"># 正规方程：不需要选择学习率α，一次计算得出，需要计算$&#123;&#123;\left( &#123;&#123;X&#125;^&#123;T&#125;&#125;X \right)&#125;^&#123;-1&#125;&#125;$，如果特征数量n较大则运算代价大，因为矩阵逆的计算时间复杂度为O(n3)，通常来说当n小于10000 时还是可以接受的，只适用于线性模型，不适合逻辑回归模型等其他模型</span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[31]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 正规方程</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">normalEqn</span><span class="params">(X, y)</span>:</span></span><br><span class="line">    theta = np.linalg.inv(X.T@X)@X.T@y<span class="comment">#X.T@X等价于X.T.dot(X)</span></span><br><span class="line">    <span class="keyword">return</span> theta</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[32]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">final_theta2=normalEqn(X, y)<span class="comment">#感觉和批量梯度下降的theta的值有点差距</span></span><br><span class="line">final_theta2</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># # run the tensorflow graph over several optimizer</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[33]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">X_data = get_X(data)</span><br><span class="line">print(X_data.shape, type(X_data))</span><br><span class="line"></span><br><span class="line">y_data = get_y(data).reshape(len(X_data), <span class="number">1</span>)  <span class="comment"># special treatment for tensorflow input data</span></span><br><span class="line">print(y_data.shape, type(y_data))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[34]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">epoch = <span class="number">2000</span></span><br><span class="line">alpha = <span class="number">0.01</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[35]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">optimizer_dict=&#123;<span class="string">'GD'</span>: tf.train.GradientDescentOptimizer,</span><br><span class="line">                <span class="string">'Adagrad'</span>: tf.train.AdagradOptimizer,</span><br><span class="line">                <span class="string">'Adam'</span>: tf.train.AdamOptimizer,</span><br><span class="line">                <span class="string">'Ftrl'</span>: tf.train.FtrlOptimizer,</span><br><span class="line">                <span class="string">'RMS'</span>: tf.train.RMSPropOptimizer</span><br><span class="line">               &#125;</span><br><span class="line">results = []</span><br><span class="line"><span class="keyword">for</span> name <span class="keyword">in</span> optimizer_dict:</span><br><span class="line">    res = linear_regression(X_data, y_data, alpha, epoch, optimizer=optimizer_dict[name])</span><br><span class="line">    res[<span class="string">'name'</span>] = name</span><br><span class="line">    results.append(res)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># # 画图</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[36]:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">fig, ax = plt.subplots(figsize=(<span class="number">16</span>, <span class="number">9</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> res <span class="keyword">in</span> results: </span><br><span class="line">    loss_data = res[<span class="string">'loss'</span>]</span><br><span class="line">    </span><br><span class="line"><span class="comment">#     print('for optimizer &#123;&#125;'.format(res['name']))</span></span><br><span class="line"><span class="comment">#     print('final parameters\n', res['parameters'])</span></span><br><span class="line"><span class="comment">#     print('final loss=&#123;&#125;\n'.format(loss_data[-1]))</span></span><br><span class="line">    ax.plot(np.arange(len(loss_data)), loss_data, label=res[<span class="string">'name'</span>])</span><br><span class="line"></span><br><span class="line">ax.set_xlabel(<span class="string">'epoch'</span>, fontsize=<span class="number">18</span>)</span><br><span class="line">ax.set_ylabel(<span class="string">'cost'</span>, fontsize=<span class="number">18</span>)</span><br><span class="line">ax.legend(bbox_to_anchor=(<span class="number">1.05</span>, <span class="number">1</span>), loc=<span class="number">2</span>, borderaxespad=<span class="number">0.</span>)</span><br><span class="line">ax.set_title(<span class="string">'different optimizer'</span>, fontsize=<span class="number">18</span>)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># In[ ]:</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://blog.paomax.com/2019/07/29/1324.html" title="编程作业ex1" target="_blank" rel="external">https://blog.paomax.com/2019/07/29/1324.html</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/TenYoDun" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.png" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/TenYoDun" target="_blank"><span class="text-dark">泡码侠</span><small class="ml-1x">如泡茶一样，品味代码</small></a></h3>
+        <div>热爱新鲜事物，有一颗永远充满极客的热情的心，关注计算机技术，对编程痴狂</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2019/07/29/1530.html" title="编程作业ex2"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2019/07/16/1005.html" title="绪论：初识机器学习"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/TenYoDun" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/brewcode" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2021 TenYoDun
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '407e73184c933f0ec5e7',
+    clientSecret: '5dd6516b266883666f03f7f8fbb3b44ea0c17c64',
+    repo: 'gitalk',
+    owner: 'TenYoDun',
+    admin: ['TenYoDun'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+      
+
+
+
+
+
+
+
+</body>
+</html>

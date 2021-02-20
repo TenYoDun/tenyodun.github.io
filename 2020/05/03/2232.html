@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <!--Google收录-->
+  <meta name="google-site-verification" content="dXAcEp5lSwJqx8PoeMwUO2Wg5lcetfO-LRvcIFdUC3s" />
+  <!--百度统计-->
+  
+  <script src="/js/baidutongji.js"></script>  
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>ProUM算法 | 泡码侠</title>
+  <meta name="description" content="这是一个新的算法，网上除了论文几乎找不到代码资料。这里的代码不完全正确，先做下记录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ProUM算法">
+<meta property="og:url" content="https://blog.paomax.com/2020/05/03/2232.html">
+<meta property="og:site_name" content="泡码侠">
+<meta property="og:description" content="这是一个新的算法，网上除了论文几乎找不到代码资料。这里的代码不完全正确，先做下记录">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-03T14:32:03.000Z">
+<meta property="article:modified_time" content="2021-02-20T05:08:10.491Z">
+<meta property="article:author" content="TenYoDun">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://blog.paomax.com/2020/05/03/2232.html">
+  
+    <link rel="alternate" href="/atom.xml" title="泡码侠" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+<meta name="generator" content="Hexo 4.2.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/TenYoDun" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.png" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">泡码侠</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">如泡茶一样，品味代码</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav menu-highlight">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/TenYoDun" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/brewcode" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p><p style="font-weight:800">我的微信</p><img src="/images/mywechat.png" style="width:160px;height:160px">
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/python/%E7%88%AC%E8%99%AB/">爬虫</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/python/%E7%88%AC%E8%99%AB/%E5%BE%85%E7%A0%94%E7%A9%B6/">待研究</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/%E7%AE%97%E6%B3%95/">算法</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%B4%E6%81%A9%E8%BE%BE/" rel="tag">吴恩达</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%AA%E8%AE%BA/" rel="tag">绪论</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 14px;">人工智能</a> <a href="/tags/%E5%90%B4%E6%81%A9%E8%BE%BE/" style="font-size: 14px;">吴恩达</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 14px;">机器学习</a> <a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 13px;">爬虫</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 13.5px;">算法</a> <a href="/tags/%E7%BB%AA%E8%AE%BA/" style="font-size: 13px;">绪论</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/python/">python</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/python/%E7%AE%97%E6%B3%95/">算法</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/19/1900.html" class="title">ProUM算法-V2</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-19T11:00:28.000Z" itemprop="datePublished">2020-05-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/python/">python</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/python/%E7%AE%97%E6%B3%95/">算法</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/03/2232.html" class="title">ProUM算法</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-03T14:32:03.000Z" itemprop="datePublished">2020-05-03</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/python/">python</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/python/%E7%AE%97%E6%B3%95/">算法</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/09/1906.html" class="title">FP-growth算法</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-09T11:06:03.000Z" itemprop="datePublished">2020-04-09</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/python/">python</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/python/%E7%88%AC%E8%99%AB/">爬虫</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/04/1600.html" class="title">淘宝登录密码RSA加密分析及相关代码的python实现</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-04T08:00:48.000Z" itemprop="datePublished">2020-03-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/07/30/0908.html" class="title">单变量线性回归</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-07-30T01:08:39.000Z" itemprop="datePublished">2019-07-30</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#proum算法"><span class="toc-number">1.</span> <span class="toc-text"> ProUm算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#databasetxt-数据库文件"><span class="toc-number">1.1.</span> <span class="toc-text"> database.txt-数据库文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proumpy-主入口文件"><span class="toc-number">1.2.</span> <span class="toc-text"> proUM.py-主入口文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#utils-工具类"><span class="toc-number">1.3.</span> <span class="toc-text"> utils-工具类</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-ProUM算法" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ProUM算法
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/05/03/2232.html" class="article-date">
+	  <time datetime="2020-05-03T14:32:03.000Z" itemprop="datePublished">2020-05-03</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/python/">python</a>►<a class="article-category-link" href="/categories/python/%E7%AE%97%E6%B3%95/">算法</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/python/" rel="tag">python</a>, <a class="article-tag-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/05/03/2232.html#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 2.5k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 12(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>这是一个新的算法，网上除了论文几乎找不到代码资料。这里的代码不完全正确，先做下记录</p>
+<a id="more"></a>
+<h2 id="proum算法"><a class="markdownIt-Anchor" href="#proum算法"></a> ProUm算法</h2>
+<h3 id="databasetxt-数据库文件"><a class="markdownIt-Anchor" href="#databasetxt-数据库文件"></a> database.txt-数据库文件</h3>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a[<span class="number">6</span>] c[<span class="number">10</span>] <span class="number">-1</span> c[<span class="number">20</span>] <span class="number">-1</span> b[<span class="number">20</span>] f[<span class="number">3</span>] <span class="number">-1</span> a[<span class="number">6</span>] e[<span class="number">6</span>] <span class="number">-1</span> <span class="number">-2</span>  SUtility:<span class="number">71</span></span><br><span class="line">f[<span class="number">2</span>] <span class="number">-1</span> a[<span class="number">15</span>] d[<span class="number">8</span>] <span class="number">-1</span> c[<span class="number">20</span>] <span class="number">-1</span> b[<span class="number">8</span>] <span class="number">-1</span> a[<span class="number">12</span>] d[<span class="number">4</span>] <span class="number">-1</span> <span class="number">-2</span>  SUtility:<span class="number">69</span></span><br><span class="line">a[<span class="number">12</span>] <span class="number">-1</span> b[<span class="number">8</span>] <span class="number">-1</span> f[<span class="number">5</span>] <span class="number">-1</span> a[<span class="number">3</span>] b[<span class="number">4</span>] e[<span class="number">6</span>] <span class="number">-1</span> <span class="number">-2</span>  SUtility:<span class="number">38</span></span><br><span class="line">a[<span class="number">9</span>] b[<span class="number">8</span>] d[<span class="number">20</span>] <span class="number">-1</span> c[<span class="number">20</span>] e[<span class="number">6</span>] <span class="number">-1</span> <span class="number">-2</span>  SUtility:<span class="number">63</span></span><br><span class="line">b[<span class="number">2</span>] e[<span class="number">6</span>] <span class="number">-1</span> c[<span class="number">10</span>] <span class="number">-1</span> f[<span class="number">2</span>] <span class="number">-1</span> d[<span class="number">8</span>] <span class="number">-1</span> a[<span class="number">12</span>] e[<span class="number">12</span>] <span class="number">-1</span> <span class="number">-2</span>  SUtility:<span class="number">52</span></span><br></pre></td></tr></table></figure>
+<h3 id="proumpy-主入口文件"><a class="markdownIt-Anchor" href="#proumpy-主入口文件"></a> proUM.py-主入口文件</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> utils</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dataset</span><span class="params">(filename)</span>:</span></span><br><span class="line">    D = []</span><br><span class="line">    <span class="keyword">with</span> open(filename, <span class="string">'r'</span>) <span class="keyword">as</span> input:  <span class="comment"># 读取文件</span></span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> input.readlines():  <span class="comment"># 一次读取一行</span></span><br><span class="line">            elements = line.replace(<span class="string">'['</span>, <span class="string">'='</span>).replace(<span class="string">']'</span>, <span class="string">'|'</span>).replace(<span class="string">' '</span>, <span class="string">''</span>).split(<span class="string">'-1'</span>)  <span class="comment"># 格式化数据</span></span><br><span class="line">            line = []  <span class="comment"># 定义空行</span></span><br><span class="line">            <span class="keyword">for</span> e_1 <span class="keyword">in</span> elements[<span class="number">0</span>:<span class="number">-1</span>]:  <span class="comment"># 遍历一行序列，除去最后一个行效应值</span></span><br><span class="line">                <span class="comment"># 如果是最后一个数据，即数据库中的SUtility（行总效应值）</span></span><br><span class="line">                e_1 = e_1.split(<span class="string">'|'</span>)[<span class="number">0</span>:<span class="number">-1</span>]  <span class="comment"># 这里分割最后面一个元素会出现一个空格，所以去掉最后一个空格不要</span></span><br><span class="line">                item = &#123;&#125;  <span class="comment"># 定义空项</span></span><br><span class="line">                <span class="keyword">for</span> e_2 <span class="keyword">in</span> e_1:  <span class="comment"># 遍历其中一项</span></span><br><span class="line">                    e_2 = e_2.split(<span class="string">'='</span>)  <span class="comment"># 分隔项名称和效应值</span></span><br><span class="line">                    t = &#123;e_2[<span class="number">0</span>]: int(e_2[<span class="number">1</span>])&#125;  <span class="comment"># 第二个是=标识符，所以从选择第1个和3个元素，下表是0和2</span></span><br><span class="line">                    item.update(t)</span><br><span class="line">                line.append(item)</span><br><span class="line">            utility = &#123;<span class="string">'SUtility'</span>: int(elements[<span class="number">-1</span>][<span class="number">11</span>:])&#125;  <span class="comment"># 取出最后一项，得到行效用值</span></span><br><span class="line">            line.append(utility)</span><br><span class="line">            D.append(line)</span><br><span class="line">    <span class="keyword">return</span> D  <span class="comment"># 返回最终处理后的序列数据库</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">构建总的效应数组</span></span><br><span class="line"><span class="string">D：源数据库</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">make_D_utility_array</span><span class="params">(D)</span>:</span></span><br><span class="line">    D_utility_array = []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> S <span class="keyword">in</span> D:</span><br><span class="line">        utility_array = utils.make_utility_array(S)  <span class="comment"># 调用生成行效应数组</span></span><br><span class="line">        D_utility_array.append(utility_array)</span><br><span class="line">    <span class="keyword">return</span> D_utility_array</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">主入口函数</span></span><br><span class="line"><span class="string">D：源数据库</span></span><br><span class="line"><span class="string">u_table：单元效应数组</span></span><br><span class="line"><span class="string">minsup：最小支持度</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">proUM</span><span class="params">(D, u_table, minsup)</span>:</span></span><br><span class="line">    D = utils.handle_one_sequences(D, u_table, minsup)</span><br><span class="line">    D_utility_array = make_D_utility_array(D)</span><br><span class="line">    project_search([], D_utility_array, minsup)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">主挖掘函数</span></span><br><span class="line"><span class="string">prefix:前缀</span></span><br><span class="line"><span class="string">projected_array：投影数据库</span></span><br><span class="line"><span class="string">minsup：最小支持度</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">project_search</span><span class="params">(prefix, projected_array, minsup)</span>:</span></span><br><span class="line">    i_item = i_concatenation(prefix, projected_array)  <span class="comment"># 得到所有项扩展</span></span><br><span class="line">    i_item = utils.set(i_item)  <span class="comment"># 去重</span></span><br><span class="line">    s_item = s_concatenation(prefix, projected_array)  <span class="comment"># 得到所有项扩展</span></span><br><span class="line">    s_item = utils.set(s_item)  <span class="comment"># 去重</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> i_item:  <span class="comment"># 遍历，去掉小于最小效应值的项集</span></span><br><span class="line">        seu = SEU(i, D_source)</span><br><span class="line">        <span class="keyword">if</span> seu &lt; minsup:</span><br><span class="line">            i_item.remove(i)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            HUSPs.append(i)</span><br><span class="line">    <span class="keyword">for</span> s <span class="keyword">in</span> s_item:  <span class="comment"># 遍历，去掉小于最小效应值的项集</span></span><br><span class="line">        seu = SEU(s, D_source)</span><br><span class="line">        <span class="keyword">if</span> seu &lt; minsup:</span><br><span class="line">            i_item.remove(s)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            HUSPs.append(s)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> i_item:  <span class="comment"># 遍历，生成项扩展，递归计算是否满足最下支持度</span></span><br><span class="line">        i = i_concatenation(t, projected_array)</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> i:</span><br><span class="line">            D_projected_array = utils.make_D_projected_array(x, projected_array)</span><br><span class="line">            <span class="keyword">if</span> SEU(x, D_source) &gt;= minsup:</span><br><span class="line">                HUSPs.append(x)</span><br><span class="line">                project_search(x, D_projected_array, minsup)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> s_item:  <span class="comment"># 遍历，生成序列扩展，递归计算是否满足最下支持度</span></span><br><span class="line">        i = s_concatenation(t, projected_array)</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> i:</span><br><span class="line">            D_projected_array = utils.make_D_projected_array(x, projected_array)</span><br><span class="line">            <span class="keyword">if</span> SEU(x, D_source) &gt;= minsup:</span><br><span class="line">                HUSPs.append(x)</span><br><span class="line">                project_search(x, D_projected_array, minsup)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">项扩展</span></span><br><span class="line"><span class="string">t：序列</span></span><br><span class="line"><span class="string">D_utility_array：生成的序列数据库</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">i_concatenation</span><span class="params">(t, D_utility_array)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> len(t) == <span class="number">1</span>:</span><br><span class="line">        pre = []</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        pre = t[:<span class="number">-1</span>]</span><br><span class="line">    D_projected_array = utils.make_D_projected_array(pre, D_utility_array)</span><br><span class="line">    <span class="keyword">if</span> len(t) == <span class="number">0</span>:</span><br><span class="line">        e = []</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        e = t[<span class="number">-1</span>]</span><br><span class="line">    <span class="keyword">if</span> len(e) &gt; <span class="number">1</span>:</span><br><span class="line">        e = e[<span class="number">-1</span>][<span class="number">-1</span>]</span><br><span class="line">    i = <span class="number">0</span>  <span class="comment"># 下标</span></span><br><span class="line">    i_extend = []</span><br><span class="line">    <span class="keyword">for</span> array <span class="keyword">in</span> D_projected_array:</span><br><span class="line">        n = []</span><br><span class="line">        <span class="keyword">for</span> a <span class="keyword">in</span> array:</span><br><span class="line">            <span class="keyword">if</span> a[<span class="number">2</span>] == e:</span><br><span class="line">                i = a[<span class="number">0</span>]  <span class="comment"># id</span></span><br><span class="line">                j = a[<span class="number">1</span>]  <span class="comment"># eid</span></span><br><span class="line">                <span class="keyword">for</span> temp <span class="keyword">in</span> array[i:]:</span><br><span class="line">                    <span class="keyword">if</span> temp[<span class="number">1</span>] == j:</span><br><span class="line">                        n.append([a[<span class="number">2</span>], temp[<span class="number">2</span>]])</span><br><span class="line">                        i_extend.append(pre + n)</span><br><span class="line">            <span class="keyword">elif</span> len(e) == <span class="number">0</span>:</span><br><span class="line">                i_extend.append(pre + [a[<span class="number">2</span>]])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> i_extend</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">序列扩展</span></span><br><span class="line"><span class="string">t：序列</span></span><br><span class="line"><span class="string">D_utility_array：生成的序列数据库</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">s_concatenation</span><span class="params">(t, D_utility_array)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> len(t) == <span class="number">1</span>:</span><br><span class="line">        pre = []</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        pre = t[:<span class="number">-1</span>]</span><br><span class="line">    D_projected_array = utils.make_D_projected_array(pre, D_utility_array)  <span class="comment">#构建投影数据库</span></span><br><span class="line">    <span class="keyword">if</span> len(t) == <span class="number">0</span>:</span><br><span class="line">        e = []</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        e = t[<span class="number">-1</span>]</span><br><span class="line">    <span class="keyword">if</span> len(e) &gt; <span class="number">1</span>:</span><br><span class="line">        e = e[<span class="number">-1</span>][<span class="number">-1</span>]</span><br><span class="line">    s_extend = []</span><br><span class="line">    <span class="keyword">for</span> array <span class="keyword">in</span> D_projected_array:</span><br><span class="line">        n = []</span><br><span class="line">        <span class="keyword">for</span> a <span class="keyword">in</span> array:</span><br><span class="line">            <span class="keyword">if</span> a[<span class="number">2</span>] == e:</span><br><span class="line">                i = a[<span class="number">6</span>]</span><br><span class="line">                <span class="keyword">if</span> i != <span class="string">'-'</span>:</span><br><span class="line">                    temp = array[i - <span class="number">1</span>][<span class="number">2</span>]</span><br><span class="line">                    x = [e, temp]</span><br><span class="line">                    s_extend.append(pre + x)    <span class="comment">#加入</span></span><br><span class="line">            <span class="keyword">elif</span> len(e) == <span class="number">0</span>:</span><br><span class="line">                s_extend.append(pre + [a[<span class="number">2</span>]])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> s_extend</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">SWU: 宽松约束</span></span><br><span class="line"><span class="string">t: 需要处理的序列，格式有：t=['a']或t=['a','b']    t=[['a','b']]   t=[['a','b'],'c']或t=['c',['a','b']]</span></span><br><span class="line"><span class="string">D: 序列数据库</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">SWU</span><span class="params">(t, D)</span>:</span></span><br><span class="line">    swu = <span class="number">0</span>  <span class="comment"># 记录行总效应值之和，如s1+s2+s5</span></span><br><span class="line">    <span class="keyword">for</span> S <span class="keyword">in</span> D:  <span class="comment"># 遍历整个序列数据库</span></span><br><span class="line">        sub_nums = &#123;&#125;  <span class="comment"># 临时，用于调试-下标记录器，用来存储项的下标</span></span><br><span class="line">        i = <span class="number">0</span>  <span class="comment"># 下标记录</span></span><br><span class="line">        flag = <span class="number">0</span>  <span class="comment"># 记录一行内找到的项的个数</span></span><br><span class="line">        <span class="keyword">for</span> sequences <span class="keyword">in</span> t:  <span class="comment"># 遍历的所有项</span></span><br><span class="line">            <span class="keyword">for</span> s <span class="keyword">in</span> S[i:]:  <span class="comment"># 遍历源数据库剩余数据</span></span><br><span class="line">                <span class="keyword">if</span> set(sequences) &lt;= set(s):  <span class="comment"># 如果t内项属于当前s项</span></span><br><span class="line">                    i = S.index(s) + <span class="number">1</span></span><br><span class="line">                    sub_nums.update(&#123;str(sequences): i&#125;)</span><br><span class="line">                    flag += <span class="number">1</span></span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">if</span> s == <span class="literal">None</span>:</span><br><span class="line">            S.remove(s)</span><br><span class="line">        <span class="keyword">if</span> len(t) == flag:  <span class="comment"># 如果t的长度和fage长度相等，即在一行内找到了t内所有元素</span></span><br><span class="line">            swu += S[<span class="number">-1</span>][<span class="string">'SUtility'</span>]  <span class="comment"># 将此行的效应值加上</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> swu</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">SWU: 紧致约束</span></span><br><span class="line"><span class="string">t: 需要处理的序列，格式有：t=['a']或t=['a','b']    t=[['a','b']]   t=[['a','b'],'c']或t=['c',['a','b']]</span></span><br><span class="line"><span class="string">D: 序列数据库</span></span><br><span class="line"><span class="string">思路: 先找出所有可能组合的项，然后再尝试组合，把符合要求的提取出来</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">SEU</span><span class="params">(t, D)</span>:</span></span><br><span class="line">    seu = <span class="number">0</span>  <span class="comment"># 记录行总效应值之和，如s1+s2+s5</span></span><br><span class="line">    <span class="keyword">for</span> S <span class="keyword">in</span> D:  <span class="comment"># 遍历整个序列数据库</span></span><br><span class="line">        sub_nums = []  <span class="comment"># 临时，用于调试-下标记录器，用来存储项的下标</span></span><br><span class="line">        <span class="keyword">for</span> s <span class="keyword">in</span> S:  <span class="comment"># 遍历源数据库剩余数据</span></span><br><span class="line">            <span class="keyword">for</span> sequences <span class="keyword">in</span> t:  <span class="comment"># 遍历的所有项</span></span><br><span class="line">                <span class="keyword">if</span> set(sequences) &lt;= set(s):  <span class="comment"># 如果t内的项属于当前s项</span></span><br><span class="line">                    sub_nums.append(&#123;str(sequences): S.index(s)&#125;)  <span class="comment"># 然后添加</span></span><br><span class="line">        t_combs = utils.combine(sub_nums, len(t))  <span class="comment"># 获得sub_num的排列</span></span><br><span class="line">        t_chrilds = []</span><br><span class="line">        <span class="keyword">for</span> t_comb <span class="keyword">in</span> t_combs:  <span class="comment"># 遍历，过滤无效的组合项</span></span><br><span class="line">            flag = <span class="number">0</span>  <span class="comment"># 标志位</span></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(len(t_comb)):  <span class="comment"># 循环比较找到的子序列和被找子序列是否相等</span></span><br><span class="line">                <span class="keyword">if</span> list(t_comb[i].keys())[<span class="number">0</span>] == str(t[i]):</span><br><span class="line">                    <span class="comment"># print("aaa")</span></span><br><span class="line">                    flag += <span class="number">1</span></span><br><span class="line">            is_in = <span class="literal">True</span>  <span class="comment"># 标志位</span></span><br><span class="line">            <span class="keyword">if</span> flag == len(t):  <span class="comment"># 如果相等</span></span><br><span class="line">                i = <span class="number">0</span></span><br><span class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> range(len(t_comb) - <span class="number">1</span>):  <span class="comment"># 遍历找到的可能序列，再判断是否再一个项集里面</span></span><br><span class="line">                    <span class="keyword">if</span> list(t_comb[i].values())[<span class="number">0</span>] == list(t_comb[i + <span class="number">1</span>].values())[<span class="number">0</span>]:  <span class="comment"># 只要又一项相等，直接跳出，不判断了，舍去</span></span><br><span class="line">                        is_in = <span class="literal">False</span></span><br><span class="line">                        <span class="keyword">break</span></span><br><span class="line">                <span class="keyword">if</span> i == len(t_comb) - <span class="number">2</span> <span class="keyword">and</span> is_in:  <span class="comment"># 说明这个子序列完全满足条件</span></span><br><span class="line">                    t_chrilds.append(t_comb)</span><br><span class="line">        <span class="comment"># print(S, t_chrilds)</span></span><br><span class="line">        <span class="comment"># 找u(t,s),行S中的最大效应值</span></span><br><span class="line">        u_t_s = <span class="number">0</span>  <span class="comment"># 表示u(t,s)</span></span><br><span class="line">        <span class="keyword">for</span> t_chrild <span class="keyword">in</span> t_chrilds:</span><br><span class="line">            temp = <span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> x <span class="keyword">in</span> t_chrild:</span><br><span class="line">                key_1 = list(x.values())[<span class="number">0</span>]  <span class="comment"># 找到键值1</span></span><br><span class="line">                <span class="keyword">if</span> (<span class="string">'['</span> <span class="keyword">in</span> list(x.keys())[<span class="number">0</span>]):</span><br><span class="line">                    <span class="keyword">for</span> key_2 <span class="keyword">in</span> eval(list(x.keys())[<span class="number">0</span>]):</span><br><span class="line">                        temp += S[key_1][key_2]  <span class="comment"># 计算当前项的效用值</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    key_2 = list(x.keys())[<span class="number">0</span>]  <span class="comment"># 找到键值2</span></span><br><span class="line">                    temp += S[key_1][key_2]  <span class="comment"># 计算当前项的效用值</span></span><br><span class="line">            <span class="keyword">if</span> u_t_s &lt; temp:  <span class="comment"># 赋值u_t_s为最大的那个</span></span><br><span class="line">                u_t_s = temp</span><br><span class="line">        <span class="comment"># 找u(&lt;S-t&gt;)rest,行S中的剩余效应值</span></span><br><span class="line">        u_rest = <span class="number">0</span>  <span class="comment"># 剩余效应值</span></span><br><span class="line">        <span class="keyword">if</span> len(t_chrilds) &gt;= <span class="number">1</span>:  <span class="comment"># 找到的子序列不为空</span></span><br><span class="line">            x = t_chrilds[<span class="number">0</span>]  <span class="comment"># 先找第一个匹配项</span></span><br><span class="line">            u_rest = utils.rest(S, x)</span><br><span class="line"></span><br><span class="line">        seu += u_t_s + u_rest</span><br><span class="line">    <span class="keyword">if</span> len(t) == <span class="number">1</span> <span class="keyword">and</span> len(t[<span class="number">0</span>]) == <span class="number">1</span>:</span><br><span class="line">        seu = <span class="number">99999999</span></span><br><span class="line">    <span class="keyword">return</span> seu</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    D_source = dataset(<span class="string">'Database.txt'</span>)</span><br><span class="line">    minsup = <span class="number">20</span>  <span class="comment"># 最小效用阈值</span></span><br><span class="line">    u_table = [&#123;<span class="string">'a'</span>: <span class="number">3</span>&#125;, &#123;<span class="string">'b'</span>: <span class="number">2</span>&#125;, &#123;<span class="string">'c'</span>: <span class="number">10</span>&#125;, &#123;<span class="string">'d'</span>: <span class="number">4</span>&#125;, &#123;<span class="string">'e'</span>: <span class="number">6</span>&#125;, &#123;<span class="string">'f'</span>: <span class="number">1</span>&#125;]  <span class="comment"># 单位效用表</span></span><br><span class="line">    HUSPs = []</span><br><span class="line">    proUM(D_source, u_table, minsup)</span><br><span class="line">    HUSPs = utils.set(HUSPs)  <span class="comment"># 去重</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(HUSPs)):</span><br><span class="line">        print(HUSPs[i])</span><br></pre></td></tr></table></figure>
+<h3 id="utils-工具类"><a class="markdownIt-Anchor" href="#utils-工具类"></a> utils-工具类</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> copy</span><br><span class="line"><span class="keyword">import</span> proUM</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">一个递归查找序列排列的函数</span></span><br><span class="line"><span class="string">list:需要排列的列表</span></span><br><span class="line"><span class="string">l:每个排列的项数</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#可不必在意</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">combine</span><span class="params">(list, l)</span>:</span></span><br><span class="line">    result = []</span><br><span class="line">    tmp = [<span class="number">0</span>] * l</span><br><span class="line">    length = len(list)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">next_num</span><span class="params">(li=<span class="number">0</span>, ni=<span class="number">0</span>)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> ni == l:</span><br><span class="line">            result.append(copy.copy(tmp))</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        <span class="keyword">for</span> lj <span class="keyword">in</span> range(li, length):</span><br><span class="line">            tmp[ni] = list[lj]</span><br><span class="line">            next_num(lj + <span class="number">1</span>, ni + <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    next_num()</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">查找剩余效应值</span></span><br><span class="line"><span class="string">由所在项的之后的其他元素的效应值加上此项之后的效应值构成</span></span><br><span class="line"><span class="string">S:行序列</span></span><br><span class="line"><span class="string">s:需要查找剩余效应值的序列</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rest</span><span class="params">(S, s)</span>:</span></span><br><span class="line">    rest = <span class="number">0</span>  <span class="comment"># 剩余效应值</span></span><br><span class="line">    s = s[<span class="number">-1</span>]  <span class="comment"># 取最后一项</span></span><br><span class="line">    key_1 = list(s.values())[<span class="number">0</span>]  <span class="comment"># 找到键值1</span></span><br><span class="line">    <span class="comment"># 找u(&lt;S-t&gt;)rest,行S中的剩余效应值</span></span><br><span class="line">    <span class="comment"># 先找第一个匹配项</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="string">'['</span> <span class="keyword">in</span> list(s.keys())[<span class="number">0</span>]):  <span class="comment"># 带‘[’说明键值大于两项，如&lt;(a,b)&gt;</span></span><br><span class="line">        i = eval(list(s.keys())[<span class="number">0</span>])[<span class="number">-1</span>]  <span class="comment"># 找到如&lt;(a,b)&gt;的最后一个b的下标</span></span><br><span class="line">        keys = list(S[key_1].keys())</span><br><span class="line">        m = keys[keys.index(i) + <span class="number">1</span>:]</span><br><span class="line">        <span class="keyword">for</span> key_2 <span class="keyword">in</span> m:</span><br><span class="line">            rest += S[key_1][key_2]  <span class="comment"># 计算当前项的效用值</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        keys = list(S[key_1].keys())</span><br><span class="line">        i = list(s.keys())[<span class="number">0</span>]</span><br><span class="line">        m = keys[keys.index(i) + <span class="number">1</span>:]</span><br><span class="line">        <span class="keyword">for</span> key_2 <span class="keyword">in</span> m:</span><br><span class="line">            rest += S[key_1][key_2]  <span class="comment"># 计算当前项的效用值</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> s <span class="keyword">in</span> S[key_1 + <span class="number">1</span>:len(S) - <span class="number">1</span>]:  <span class="comment"># 去掉最后一个项的行总效应值项</span></span><br><span class="line">        rest += sum(s.values())</span><br><span class="line">    <span class="keyword">return</span> rest</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">整理数据库，去掉不满足条件的一频繁项集</span></span><br><span class="line"><span class="string">D:源数据库</span></span><br><span class="line"><span class="string">u_table:单位效用表</span></span><br><span class="line"><span class="string">minsup:最小支持度</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">handle_one_sequences</span><span class="params">(D, u_table, minsup)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> u <span class="keyword">in</span> u_table:  <span class="comment"># 计算一项集SWU</span></span><br><span class="line">        e = list(u.keys())</span><br><span class="line">        swu = proUM.SWU(e, D)</span><br><span class="line">        <span class="keyword">if</span> swu &lt; minsup:  <span class="comment"># 如果小于则去除</span></span><br><span class="line">            <span class="keyword">for</span> S <span class="keyword">in</span> D:</span><br><span class="line">                <span class="keyword">for</span> s <span class="keyword">in</span> S:</span><br><span class="line">                    <span class="keyword">if</span> set(e) &lt;= set(list(s.keys())):  <span class="comment"># 如果在里面就删除</span></span><br><span class="line">                        S[<span class="number">-1</span>][<span class="string">'SUtility'</span>] = int(list(S[<span class="number">-1</span>].values())[<span class="number">0</span>]) - s[e[<span class="number">0</span>]]</span><br><span class="line">                        s.pop(e[<span class="number">0</span>])</span><br><span class="line">                    <span class="keyword">if</span> len(s) == <span class="number">0</span>:</span><br><span class="line">                        S.remove(s)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> D</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">建立一行的效应数组:</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">make_utility_array</span><span class="params">(S)</span>:</span></span><br><span class="line">    i = <span class="number">0</span>  <span class="comment"># 计数</span></span><br><span class="line">    utility_array = []  <span class="comment"># 临时array</span></span><br><span class="line">    <span class="keyword">for</span> s <span class="keyword">in</span> S:  <span class="comment"># 遍历数据库行</span></span><br><span class="line">        eid = S.index(s)  <span class="comment"># eid</span></span><br><span class="line">        <span class="keyword">for</span> item, u <span class="keyword">in</span> s.items():</span><br><span class="line">            i += <span class="number">1</span>  <span class="comment"># array id</span></span><br><span class="line">            ru = rest(S, [&#123;item: eid&#125;])</span><br><span class="line">            utility_array.append([i, eid, item, u, ru])</span><br><span class="line">    utility_array = utility_array[:<span class="number">-1</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(utility_array)):  <span class="comment"># 遍历查找next_position,next_eid</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i + <span class="number">1</span>, len(utility_array)):  <span class="comment"># 找next_position</span></span><br><span class="line">            <span class="keyword">if</span> utility_array[i][<span class="number">2</span>] == utility_array[j][<span class="number">2</span>]:  <span class="comment"># 如果元素相同，说明找到</span></span><br><span class="line">                utility_array[i].append(utility_array[j][<span class="number">0</span>])  <span class="comment"># 则将找到元素的index赋值给next_position</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">elif</span> j == len(utility_array) - <span class="number">1</span>:  <span class="comment"># 找到最后没找到</span></span><br><span class="line">                utility_array[i].append(<span class="string">'-'</span>)</span><br><span class="line">        <span class="keyword">if</span> i == len(utility_array) - <span class="number">1</span>:  <span class="comment"># 最后一个元素</span></span><br><span class="line">            utility_array[i].append(<span class="string">'-'</span>)</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i + <span class="number">1</span>, len(utility_array)):  <span class="comment"># 找next_eid</span></span><br><span class="line">            <span class="keyword">if</span> utility_array[i][<span class="number">1</span>] != utility_array[j][<span class="number">1</span>]:  <span class="comment"># 如果元素相同，说明找到</span></span><br><span class="line">                utility_array[i].append(utility_array[j][<span class="number">0</span>])  <span class="comment"># 则将找到元素的index赋值给next_position</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">elif</span> j == len(utility_array) - <span class="number">1</span>:  <span class="comment"># 找到最后没找到</span></span><br><span class="line">                utility_array[i].append(<span class="string">'-'</span>)</span><br><span class="line">        <span class="keyword">if</span> i == len(utility_array) - <span class="number">1</span>:  <span class="comment"># 最后一个元素</span></span><br><span class="line">            utility_array[i].append(<span class="string">'-'</span>)</span><br><span class="line">    <span class="keyword">return</span> utility_array</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">构建一行的投影数据库</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">make_projected_array</span><span class="params">(t, utility_array)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> len(t) &gt; <span class="number">1</span>:</span><br><span class="line">        e = t[<span class="number">-1</span>]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        e = t</span><br><span class="line">    <span class="keyword">if</span> len(e) == <span class="number">1</span> <span class="keyword">and</span> len(e[<span class="number">0</span>]) != <span class="number">1</span>:</span><br><span class="line">        e = e[<span class="number">-1</span>][<span class="number">-1</span>]</span><br><span class="line">    i = <span class="number">0</span>  <span class="comment"># 下标</span></span><br><span class="line">    <span class="keyword">for</span> a <span class="keyword">in</span> utility_array:</span><br><span class="line">        i = a[<span class="number">6</span>]</span><br><span class="line">        <span class="keyword">if</span> a[<span class="number">2</span>] == e:</span><br><span class="line">            <span class="keyword">if</span> i == <span class="string">'-'</span>:</span><br><span class="line">                utility_array = []</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                i = a[<span class="number">6</span>] - <span class="number">1</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">if</span> i != <span class="string">'-'</span>:</span><br><span class="line">        utility_array = utility_array[i:]</span><br><span class="line">    <span class="keyword">return</span> utility_array</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">构建整个某个序列的投影数据库</span></span><br><span class="line"><span class="string">t:序列</span></span><br><span class="line"><span class="string">D_utility_array：数据库总的效应数组</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">make_D_projected_array</span><span class="params">(t, D_utility_array)</span>:</span></span><br><span class="line">    D_projected_array = []</span><br><span class="line">    <span class="keyword">for</span> array <span class="keyword">in</span> D_utility_array:</span><br><span class="line">        projected_array = make_projected_array(t, array)    <span class="comment">#调用行投影数据库函数</span></span><br><span class="line">        D_projected_array.append(projected_array)   <span class="comment">#加入</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> D_projected_array</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">去重函数</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">set</span><span class="params">(list)</span>:</span></span><br><span class="line">    new_list = []</span><br><span class="line">    <span class="keyword">for</span> id <span class="keyword">in</span> list:</span><br><span class="line">        <span class="keyword">if</span> id <span class="keyword">not</span> <span class="keyword">in</span> new_list:</span><br><span class="line">            new_list.append(id)</span><br><span class="line">    <span class="keyword">return</span> new_list</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://blog.paomax.com/2020/05/03/2232.html" title="ProUM算法" target="_blank" rel="external">https://blog.paomax.com/2020/05/03/2232.html</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/TenYoDun" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.png" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/TenYoDun" target="_blank"><span class="text-dark">泡码侠</span><small class="ml-1x">如泡茶一样，品味代码</small></a></h3>
+        <div>热爱新鲜事物，有一颗永远充满极客的热情的心，关注计算机技术，对编程痴狂</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/05/19/1900.html" title="ProUM算法-V2"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/04/09/1906.html" title="FP-growth算法"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/TenYoDun" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/brewcode" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2021 TenYoDun
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '407e73184c933f0ec5e7',
+    clientSecret: '5dd6516b266883666f03f7f8fbb3b44ea0c17c64',
+    repo: 'gitalk',
+    owner: 'TenYoDun',
+    admin: ['TenYoDun'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+      
+
+
+
+
+
+
+
+</body>
+</html>

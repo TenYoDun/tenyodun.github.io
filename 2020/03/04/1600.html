@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <!--Google收录-->
+  <meta name="google-site-verification" content="dXAcEp5lSwJqx8PoeMwUO2Wg5lcetfO-LRvcIFdUC3s" />
+  <!--百度统计-->
+  
+  <script src="/js/baidutongji.js"></script>  
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>淘宝登录密码RSA加密分析及相关代码的python实现 | 泡码侠</title>
+  <meta name="description" content="这个特殊时期中，口罩难买。为了能在网上抢购口罩，就去找各种自动枪口罩的脚本，但是功能都不尽人意，于是想要自己写一个。这里是记录的一个关于淘宝登录的问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="淘宝登录密码RSA加密分析及相关代码的python实现">
+<meta property="og:url" content="https://blog.paomax.com/2020/03/04/1600.html">
+<meta property="og:site_name" content="泡码侠">
+<meta property="og:description" content="这个特殊时期中，口罩难买。为了能在网上抢购口罩，就去找各种自动枪口罩的脚本，但是功能都不尽人意，于是想要自己写一个。这里是记录的一个关于淘宝登录的问题。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.paomax.com/img/20200304181923.png">
+<meta property="og:image" content="https://blog.paomax.com/img/20200304190832.png">
+<meta property="og:image" content="https://blog.paomax.com/img/20200304190928.png">
+<meta property="og:image" content="https://blog.paomax.com/img/20200304191450.png">
+<meta property="article:published_time" content="2020-03-04T08:00:48.000Z">
+<meta property="article:modified_time" content="2021-02-20T05:08:10.492Z">
+<meta property="article:author" content="TenYoDun">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="爬虫">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.paomax.com/img/20200304181923.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://blog.paomax.com/2020/03/04/1600.html">
+  
+    <link rel="alternate" href="/atom.xml" title="泡码侠" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+<meta name="generator" content="Hexo 4.2.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/TenYoDun" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.png" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">泡码侠</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">如泡茶一样，品味代码</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav menu-highlight">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/TenYoDun" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/brewcode" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p><p style="font-weight:800">我的微信</p><img src="/images/mywechat.png" style="width:160px;height:160px">
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/python/%E7%88%AC%E8%99%AB/">爬虫</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/python/%E7%88%AC%E8%99%AB/%E5%BE%85%E7%A0%94%E7%A9%B6/">待研究</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/%E7%AE%97%E6%B3%95/">算法</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%B4%E6%81%A9%E8%BE%BE/" rel="tag">吴恩达</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%AA%E8%AE%BA/" rel="tag">绪论</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 14px;">人工智能</a> <a href="/tags/%E5%90%B4%E6%81%A9%E8%BE%BE/" style="font-size: 14px;">吴恩达</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 14px;">机器学习</a> <a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 13px;">爬虫</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 13.5px;">算法</a> <a href="/tags/%E7%BB%AA%E8%AE%BA/" style="font-size: 13px;">绪论</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/python/">python</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/python/%E7%AE%97%E6%B3%95/">算法</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/19/1900.html" class="title">ProUM算法-V2</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-19T11:00:28.000Z" itemprop="datePublished">2020-05-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/python/">python</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/python/%E7%AE%97%E6%B3%95/">算法</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/03/2232.html" class="title">ProUM算法</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-03T14:32:03.000Z" itemprop="datePublished">2020-05-03</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/python/">python</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/python/%E7%AE%97%E6%B3%95/">算法</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/09/1906.html" class="title">FP-growth算法</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-09T11:06:03.000Z" itemprop="datePublished">2020-04-09</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/python/">python</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/python/%E7%88%AC%E8%99%AB/">爬虫</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/04/1600.html" class="title">淘宝登录密码RSA加密分析及相关代码的python实现</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-04T08:00:48.000Z" itemprop="datePublished">2020-03-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/07/30/0908.html" class="title">单变量线性回归</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-07-30T01:08:39.000Z" itemprop="datePublished">2019-07-30</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一-淘宝http请求分析"><span class="toc-number">1.</span> <span class="toc-text"> 一、淘宝http请求分析</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#二-利用模数和指数生成密钥"><span class="toc-number">2.</span> <span class="toc-text"> 二、利用模数和指数生成密钥</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#三-利用密钥加密密码"><span class="toc-number">3.</span> <span class="toc-text"> 三、利用密钥加密密码</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-淘宝登录密码加密分析及相关代码的python实现" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      淘宝登录密码RSA加密分析及相关代码的python实现
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/03/04/1600.html" class="article-date">
+	  <time datetime="2020-03-04T08:00:48.000Z" itemprop="datePublished">2020-03-04</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/python/">python</a>►<a class="article-category-link" href="/categories/python/%E7%88%AC%E8%99%AB/">爬虫</a>►<a class="article-category-link" href="/categories/python/%E7%88%AC%E8%99%AB/%E5%BE%85%E7%A0%94%E7%A9%B6/">待研究</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/python/" rel="tag">python</a>, <a class="article-tag-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/03/04/1600.html#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 3k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 14(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>这个特殊时期中，口罩难买。为了能在网上抢购口罩，就去找各种自动枪口罩的脚本，但是功能都不尽人意，于是想要自己写一个。这里是记录的一个关于淘宝登录的问题。</p>
+<a id="more"></a>
+<p><strong>其实对于这种网页http请求的抓包，很久之前就很感兴趣，但一直以为很难，也没时间搞，毕竟是破解别人的东西。但通过两天的研究，也不是想的那么难，而且破解的还是淘宝，虽然这种技术对大牛来说小菜一碟，但好久没有这种成就感了，嘿嘿😁！下面就分享我的学习过程</strong></p>
+<h1 id="一-淘宝http请求分析"><a class="markdownIt-Anchor" href="#一-淘宝http请求分析"></a> 一、淘宝http请求分析</h1>
+<p>参考博客: <a href="https://www.jianshu.com/p/f0b3ea504acf" target="_blank" rel="noopener">https://www.jianshu.com/p/f0b3ea504acf</a></p>
+<p><strong>1.</strong> 首先说一下Chrome和Firefox两者的开发者工具区别</p>
+<ul>
+<li>
+<p>Chrome</p>
+<p>优点：更底层，分析的更彻底</p>
+<p>缺点：全英文，对中国人不太友好；使用起来较复杂；一些跳转页面找不到具体的请求</p>
+</li>
+<li>
+<p>Firefox</p>
+<p>优点：界面更好看；几乎全中文界面，跳转页面代码也能很容易看到</p>
+<p>缺点：对追究细节的开发者不友好；network栏目不能格式化js</p>
+</li>
+</ul>
+<p>总体来说，我是喜欢Firefox，感觉它更是一种现代化的工具。</p>
+<p><strong>2.</strong> 打开淘宝登录页面，按F12打开Firefox开发者工具，找到网络选项。等待抓包。输入账号密码，用户名最好正确输入，密码随便输入即可，然后点击登录按钮，开始抓包。</p>
+<p><img src="/img/20200304181923.png" alt="" /></p>
+<p>会看到参数里面有个<code>TPL_password_2</code>,这个直接全局查找TPL_password_2关键词还不一定能找得到，在搜索TPL_password_2关键词没有结果后就尝试搜了了搜其他关键词如RSA、encrypt，尤其是encrypt，还真找到了对应的加密js文件：</p>
+<p><img src="/img/20200304190832.png" alt="" /><br />
+<img src="/img/20200304190928.png" alt="" /></p>
+<p>分析里面的代码可以找到this.exponent是RSA加密指数，值是10001、this.pbk是密钥模数其值是网页源码的一个元素值。</p>
+<p><img src="/img/20200304191450.png" alt="" /></p>
+<p>好的，到这里分析工作基本就完成了</p>
+<h1 id="二-利用模数和指数生成密钥"><a class="markdownIt-Anchor" href="#二-利用模数和指数生成密钥"></a> 二、利用模数和指数生成密钥</h1>
+<p>python代码，需要安装cryptography模块</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> cryptography.hazmat.backends <span class="keyword">import</span> default_backend</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives.asymmetric <span class="keyword">import</span> rsa</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives <span class="keyword">import</span> serialization</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">populate_public_key</span><span class="params">(rsaExponent, rsaModulus)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    根据cryptography包下的rsa模块，对指数模数进行处理生成公钥</span></span><br><span class="line"><span class="string">    :param rsaExponent:指数</span></span><br><span class="line"><span class="string">    :param rsaModulus:模数</span></span><br><span class="line"><span class="string">    :return:公钥</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    rsaExponent = int(rsaExponent, <span class="number">16</span>)  <span class="comment"># 十六进制字符串转十进制</span></span><br><span class="line">    rsaModulus = int(rsaModulus, <span class="number">16</span>)</span><br><span class="line">    pubkey = rsa.RSAPublicNumbers(rsaExponent, rsaModulus).public_key(default_backend())</span><br><span class="line">    <span class="keyword">return</span> pubkey</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save_pub_key</span><span class="params">(pub_key, pem_name)</span>:</span></span><br><span class="line">    <span class="comment">#将公钥编码为PEM格式的数据</span></span><br><span class="line">    pem = pub_key.public_bytes(</span><br><span class="line">        encoding=serialization.Encoding.PEM,</span><br><span class="line">        format=serialization.PublicFormat.SubjectPublicKeyInfo</span><br><span class="line">    )</span><br><span class="line">    <span class="comment"># 将PEM个数的数据写入文本文件中</span></span><br><span class="line">    <span class="keyword">with</span> open(pem_name, <span class="string">'w+'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.writelines(pem.decode())</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    rsaExponent = <span class="string">"010001"</span> <span class="comment">#指数</span></span><br><span class="line">    <span class="comment">#淘宝的J_PBK元素的值</span></span><br><span class="line">    rsaModulus = <span class="string">"9a39c3fefeadf3d194850ef3a1d707dfa7bec0609a60bfcc7fe4ce2c615908b9599c8911e800aff684f804413324dc6d9f982f437e95ad60327d221a00a2575324263477e4f6a15e3b56a315e0434266e092b2dd5a496d109cb15875256c73a2f0237c5332de28388693c643c8764f137e28e8220437f05b7659f58c4df94685"</span> </span><br><span class="line"></span><br><span class="line">    pubkey = populate_public_key(rsaExponent, rsaModulus)</span><br><span class="line">    save_pub_key(pubkey,<span class="string">"pbk.pem"</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="三-利用密钥加密密码"><a class="markdownIt-Anchor" href="#三-利用密钥加密密码"></a> 三、利用密钥加密密码</h1>
+<p>从上面图中的参数TPL_password_2看到这些值是16进制的，所以一般的吧加密后的密文输出为base64（64进制）是不行的，所以保存成16进制。这个地方弄了好长时间，基础还是太差了😥。为了起到警示作用，我把错误代码注释掉一起放到下面的代码中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> rsa</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> request</span><br><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">encrypt</span><span class="params">()</span>:</span>  <span class="comment"># 用公钥加密</span></span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">'success.pem'</span>, <span class="string">'rb'</span>) <span class="keyword">as</span> publickfile:</span><br><span class="line">        p = publickfile.read()</span><br><span class="line">    pubkey = rsa.PublicKey.load_pkcs1_openssl_pem(p)</span><br><span class="line">    <span class="comment">#pubkey = rsa.PublicKey.load_pkcs1(p) #这一个代码会报错【No PEM start marker "b'-----BEGIN RSA PUBLIC KEY-----'" found】，百度后说是公钥格式的问题，先放一放</span></span><br><span class="line">    original_text = <span class="string">'the password'</span>.encode(<span class="string">'utf8'</span>)</span><br><span class="line">    code = rsa.encrypt(original_text, pubkey)</span><br><span class="line">    <span class="comment">#下面是未转换时候的字节值</span></span><br><span class="line">    <span class="comment">#code = b'\x1a~\x1fu\x9a\x11\xe3\xf2\xa1\xcc\x16\xe6\xdb(1m\x05@a,\xa2A\x00j\x19\xa7\xe2\xad\xc1W \x8bN\x96E&#123;H\xf3C\xcdB\xa7\xf1\xd0;\x8b\x9a\xd4/\xaeY\xa5D\xa4\xfb\x0c\xf0j.Y\xa0\x86\r\x84,\xee\xdc\x92\xb1RO\xb1\x9fW\xc2&#125;\xa4\xbf\xb4f\x91\x19\xc2\xe6\xe6\xd1n\x07Z\xc1\xe1^(]\xd9\x94\xb7Y\xf2;\n:\x17ela\xa1\xac:2P\xb5\xdd\x8d\xda\x13\xae\xcf0\xcbM\x82)\xf5_9\x10\x99'</span></span><br><span class="line">    code = str(binascii.b2a_hex(code))[<span class="number">2</span>:<span class="number">-1</span>]</span><br><span class="line">    <span class="comment">#code = base64.b64encode(code).decode('utf-8') #之前的转换成64进制</span></span><br><span class="line">    <span class="comment">#code = request.quote(code)</span></span><br><span class="line">    <span class="keyword">return</span> code</span><br><span class="line"></span><br><span class="line">print(encrypt())</span><br></pre></td></tr></table></figure>
+<p>一段生成的密文，和淘宝生成的长度一样，而且通过了登录测试。</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">594</span>cfa<span class="number">7</span>f<span class="number">94e7224</span>ad<span class="number">24</span>b<span class="number">4e54</span>ceaa<span class="number">8159</span><span class="keyword">c</span><span class="number">2</span>b<span class="number">4076</span>cec<span class="number">6396</span>a<span class="number">47</span>a<span class="number">90</span>f<span class="number">962431</span>a<span class="number">6</span>f<span class="number">58827</span><span class="keyword">c</span><span class="number">6</span>b<span class="number">0</span>a<span class="number">33970</span>f<span class="number">159</span>b<span class="number">23662</span>d<span class="number">394</span>ef<span class="number">62757e680</span>ea<span class="number">8</span>fadf<span class="number">0</span>bbf<span class="number">3634179</span>a<span class="number">3</span>cbfebc<span class="number">358</span>a<span class="number">095</span>b<span class="number">1</span>cd<span class="number">9e8</span>a<span class="number">01885e46</span><span class="keyword">c</span><span class="number">6</span>fe<span class="number">3</span>d<span class="number">792</span>d<span class="number">8799e82</span>ef<span class="number">82</span><span class="keyword">c</span><span class="number">35</span>dd<span class="number">349</span>b<span class="number">7943</span>ccaee<span class="number">0e16</span>be<span class="number">50340</span><span class="keyword">c</span><span class="number">98673e6</span>d<span class="number">12e63</span>ff<span class="number">5</span>f<span class="number">4</span>fd<span class="number">7</span>d<span class="number">5</span>f<span class="number">6</span>ddcab<span class="number">99e50</span>b<span class="number">888</span><span class="keyword">c</span><span class="number">2e037</span>a<span class="number">9</span>ee<span class="number">10901</span></span><br></pre></td></tr></table></figure>
+<p><strong>注意第十行这个点，以后再来补充</strong><br />
+<strong>一个小知识点：不要在同一目录下创建和调用的全局模块文件名相同的的文件，因为会优先调用当前目录下的文件</strong></p>
+<p>登录代码以后再分析，来自他人，先放到下面<br />
+参考博客：<a href="https://blog.csdn.net/u014044812/article/details/99584382" target="_blank" rel="noopener">https://blog.csdn.net/u014044812/article/details/99584382</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">获取详细教程、获取代码帮助、提出意见建议</span></span><br><span class="line"><span class="string">关注微信公众号「裸睡的猪」与猪哥联系</span></span><br><span class="line"><span class="string">@Author  :   猪哥,</span></span><br><span class="line"><span class="string">@Version :   2.0"</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line">s = requests.Session()</span><br><span class="line"><span class="comment"># cookies序列化文件</span></span><br><span class="line">COOKIES_FILE_PATH = <span class="string">'taobao_login_cookies.txt'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UsernameLogin</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, username, ua, TPL_password2)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        账号登录对象</span></span><br><span class="line"><span class="string">        :param username: 用户名</span></span><br><span class="line"><span class="string">        :param ua: 淘宝的ua参数</span></span><br><span class="line"><span class="string">        :param TPL_password2: 加密后的密码</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># 检测是否需要验证码的URL</span></span><br><span class="line">        self.user_check_url = <span class="string">'https://login.taobao.com/member/request_nick_check.do?_input_charset=utf-8'</span></span><br><span class="line">        <span class="comment"># 验证淘宝用户名密码URL</span></span><br><span class="line">        self.verify_password_url = <span class="string">"https://login.taobao.com/member/login.jhtml"</span></span><br><span class="line">        <span class="comment"># 访问st码URL</span></span><br><span class="line">        self.vst_url = <span class="string">'https://login.taobao.com/member/vst.htm?st=&#123;&#125;'</span></span><br><span class="line">        <span class="comment"># 淘宝个人 主页</span></span><br><span class="line">        self.my_taobao_url = <span class="string">'http://i.taobao.com/my_taobao.htm'</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 淘宝用户名</span></span><br><span class="line">        self.username = username</span><br><span class="line">        <span class="comment"># 淘宝关键参数，包含用户浏览器等一些信息，很多地方会使用，从浏览器或抓包工具中复制，可重复使用</span></span><br><span class="line">        self.ua = ua</span><br><span class="line">        <span class="comment"># 加密后的密码，从浏览器或抓包工具中复制，可重复使用</span></span><br><span class="line">        self.TPL_password2 = TPL_password2</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 请求超时时间</span></span><br><span class="line">        self.timeout = <span class="number">3</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_user_check</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        检测账号是否需要验证码</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        data = &#123;</span><br><span class="line">            <span class="string">'username'</span>: self.username,</span><br><span class="line">            <span class="string">'ua'</span>: self.ua</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            response = s.post(self.user_check_url, data=data, timeout=self.timeout)</span><br><span class="line">            response.raise_for_status()</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            print(<span class="string">'检测是否需要验证码请求失败，原因：'</span>)</span><br><span class="line">            <span class="keyword">raise</span> e</span><br><span class="line">        needcode = response.json()[<span class="string">'needcode'</span>]</span><br><span class="line">        print(<span class="string">'是否需要滑块验证：&#123;&#125;'</span>.format(needcode))</span><br><span class="line">        <span class="keyword">return</span> needcode</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_verify_password</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        验证用户名密码，并获取st码申请URL</span></span><br><span class="line"><span class="string">        :return: 验证成功返回st码申请地址</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        verify_password_headers = &#123;</span><br><span class="line">            <span class="string">'Connection'</span>: <span class="string">'keep-alive'</span>,</span><br><span class="line">            <span class="string">'Cache-Control'</span>: <span class="string">'max-age=0'</span>,</span><br><span class="line">            <span class="string">'Origin'</span>: <span class="string">'https://login.taobao.com'</span>,</span><br><span class="line">            <span class="string">'Upgrade-Insecure-Requests'</span>: <span class="string">'1'</span>,</span><br><span class="line">            <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'</span>,</span><br><span class="line">            <span class="string">'Content-Type'</span>: <span class="string">'application/x-www-form-urlencoded'</span>,</span><br><span class="line">            <span class="string">'Referer'</span>: <span class="string">'https://login.taobao.com/member/login.jhtml?from=taobaoindex&amp;f=top&amp;style=&amp;sub=true&amp;redirect_url=https%3A%2F%2Fi.taobao.com%2Fmy_taobao.htm'</span>,</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment"># 登录toabao.com提交的数据，如果登录失败，可以从浏览器复制你的form data</span></span><br><span class="line">        verify_password_data = &#123;</span><br><span class="line">            <span class="string">'TPL_username'</span>: self.username,</span><br><span class="line">            <span class="string">'ncoToken'</span>: <span class="string">'cdf05a89ad5104403ebb12ebc9b7626af277b066'</span>,</span><br><span class="line">            <span class="string">'slideCodeShow'</span>: <span class="string">'false'</span>,</span><br><span class="line">            <span class="string">'useMobile'</span>: <span class="string">'false'</span>,</span><br><span class="line">            <span class="string">'lang'</span>: <span class="string">'zh_CN'</span>,</span><br><span class="line">            <span class="string">'loginsite'</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="string">'newlogin'</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="string">'TPL_redirect_url'</span>: <span class="string">'https://s.taobao.com/search?q=%E9%80%9F%E5%BA%A6%E9%80%9F%E5%BA%A6&amp;imgfile=&amp;commend=all&amp;ssid=s5-e&amp;search_type=item&amp;sourceId=tb.index&amp;spm=a21bo.2017.201856-taobao-item.1&amp;ie=utf8&amp;initiative_id=tbindexz_20170306'</span>,</span><br><span class="line">            <span class="string">'from'</span>: <span class="string">'tb'</span>,</span><br><span class="line">            <span class="string">'fc'</span>: <span class="string">'default'</span>,</span><br><span class="line">            <span class="string">'style'</span>: <span class="string">'default'</span>,</span><br><span class="line">            <span class="string">'keyLogin'</span>: <span class="string">'false'</span>,</span><br><span class="line">            <span class="string">'qrLogin'</span>: <span class="string">'true'</span>,</span><br><span class="line">            <span class="string">'newMini'</span>: <span class="string">'false'</span>,</span><br><span class="line">            <span class="string">'newMini2'</span>: <span class="string">'false'</span>,</span><br><span class="line">            <span class="string">'loginType'</span>: <span class="string">'3'</span>,</span><br><span class="line">            <span class="string">'gvfdcname'</span>: <span class="string">'10'</span>,</span><br><span class="line">            <span class="string">'gvfdcre'</span>: <span class="string">'68747470733A2F2F6C6F67696E2E74616F62616F2E636F6D2F6D656D6265722F6C6F676F75742E6A68746D6C3F73706D3D61323330722E312E3735343839343433372E372E33353836363032633279704A767526663D746F70266F75743D7472756526726564697265637455524C3D6874747073253341253246253246732E74616F62616F2E636F6D25324673656172636825334671253344253235453925323538302532353946253235453525323542412532354136253235453925323538302532353946253235453525323542412532354136253236696D6766696C65253344253236636F6D6D656E64253344616C6C2532367373696425334473352D652532367365617263685F747970652533446974656D253236736F75726365496425334474622E696E64657825323673706D253344613231626F2E323031372E3230313835362D74616F62616F2D6974656D2E31253236696525334475746638253236696E69746961746976655F69642533447462696E6465787A5F3230313730333036'</span>,</span><br><span class="line">            <span class="string">'TPL_password_2'</span>: self.TPL_password2,</span><br><span class="line">            <span class="string">'loginASR'</span>: <span class="string">'1'</span>,</span><br><span class="line">            <span class="string">'loginASRSuc'</span>: <span class="string">'1'</span>,</span><br><span class="line">            <span class="string">'oslanguage'</span>: <span class="string">'zh-CN'</span>,</span><br><span class="line">            <span class="string">'sr'</span>: <span class="string">'1440*900'</span>,</span><br><span class="line">            <span class="string">'osVer'</span>: <span class="string">'macos|10.145'</span>,</span><br><span class="line">            <span class="string">'naviVer'</span>: <span class="string">'chrome|76.038091'</span>,</span><br><span class="line">            <span class="string">'osACN'</span>: <span class="string">'Mozilla'</span>,</span><br><span class="line">            <span class="string">'osAV'</span>: <span class="string">'5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36'</span>,</span><br><span class="line">            <span class="string">'osPF'</span>: <span class="string">'MacIntel'</span>,</span><br><span class="line">            <span class="string">'appkey'</span>: <span class="string">'00000000'</span>,</span><br><span class="line">            <span class="string">'mobileLoginLink'</span>: <span class="string">'https://login.taobao.com/member/login.jhtml?redirectURL=https://s.taobao.com/search?q=%E9%80%9F%E5%BA%A6%E9%80%9F%E5%BA%A6&amp;imgfile=&amp;commend=all&amp;ssid=s5-e&amp;search_type=item&amp;sourceId=tb.index&amp;spm=a21bo.2017.201856-taobao-item.1&amp;ie=utf8&amp;initiative_id=tbindexz_20170306&amp;useMobile=true'</span>,</span><br><span class="line">            <span class="string">'showAssistantLink'</span>: <span class="string">''</span>,</span><br><span class="line">            <span class="string">'um_token'</span>: <span class="string">'T898C0FDF1A3CEE5389D682340C5F299FFE590F51543C8E3DDA8341C869'</span>,</span><br><span class="line">            <span class="string">'ua'</span>: self.ua</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            response = s.post(self.verify_password_url, headers=verify_password_headers, data=verify_password_data,</span><br><span class="line">                              timeout=self.timeout)</span><br><span class="line">            response.raise_for_status()</span><br><span class="line">            <span class="comment"># 从返回的页面中提取申请st码地址</span></span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            print(<span class="string">'验证用户名和密码请求失败，原因：'</span>)</span><br><span class="line">            <span class="keyword">raise</span> e</span><br><span class="line">        <span class="comment"># 提取申请st码url</span></span><br><span class="line">        apply_st_url_match = re.search(<span class="string">r'&lt;script src="(.*?)"&gt;&lt;/script&gt;'</span>, response.text)</span><br><span class="line">        <span class="comment"># 存在则返回</span></span><br><span class="line">        <span class="keyword">if</span> apply_st_url_match:</span><br><span class="line">            print(<span class="string">'验证用户名密码成功，st码申请地址：&#123;&#125;'</span>.format(apply_st_url_match.group(<span class="number">1</span>)))</span><br><span class="line">            <span class="keyword">return</span> apply_st_url_match.group(<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> RuntimeError(<span class="string">'用户名密码验证失败！response：&#123;&#125;'</span>.format(response.text))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_apply_st</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        申请st码</span></span><br><span class="line"><span class="string">        :return: st码</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        apply_st_url = self._verify_password()</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            response = s.get(apply_st_url)</span><br><span class="line">            response.raise_for_status()</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            print(<span class="string">'申请st码请求失败，原因：'</span>)</span><br><span class="line">            <span class="keyword">raise</span> e</span><br><span class="line">        st_match = re.search(<span class="string">r'"data":&#123;"st":"(.*?)"&#125;'</span>, response.text)</span><br><span class="line">        <span class="keyword">if</span> st_match:</span><br><span class="line">            print(<span class="string">'获取st码成功，st码：&#123;&#125;'</span>.format(st_match.group(<span class="number">1</span>)))</span><br><span class="line">            <span class="keyword">return</span> st_match.group(<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> RuntimeError(<span class="string">'获取st码失败！response：&#123;&#125;'</span>.format(response.text))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">login</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        使用st码登录</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># 加载cookies文件</span></span><br><span class="line">        <span class="keyword">if</span> self._load_cookies():</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="comment"># 判断是否需要滑块验证</span></span><br><span class="line">        self._user_check()</span><br><span class="line">        st = self._apply_st()</span><br><span class="line">        headers = &#123;</span><br><span class="line">            <span class="string">'Host'</span>: <span class="string">'login.taobao.com'</span>,</span><br><span class="line">            <span class="string">'Connection'</span>: <span class="string">'Keep-Alive'</span>,</span><br><span class="line">            <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            response = s.get(self.vst_url.format(st), headers=headers)</span><br><span class="line">            response.raise_for_status()</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            print(<span class="string">'st码登录请求，原因：'</span>)</span><br><span class="line">            <span class="keyword">raise</span> e</span><br><span class="line">        <span class="comment"># 登录成功，提取跳转淘宝用户主页url</span></span><br><span class="line">        my_taobao_match = re.search(<span class="string">r'top.location.href = "(.*?)"'</span>, response.text)</span><br><span class="line">        <span class="keyword">if</span> my_taobao_match:</span><br><span class="line">            print(<span class="string">'登录淘宝成功，跳转链接：&#123;&#125;'</span>.format(my_taobao_match.group(<span class="number">1</span>)))</span><br><span class="line">            self._serialization_cookies()</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> RuntimeError(<span class="string">'登录失败！response：&#123;&#125;'</span>.format(response.text))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_load_cookies</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 1、判断cookies序列化文件是否存在</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(COOKIES_FILE_PATH):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="comment"># 2、加载cookies</span></span><br><span class="line">        s.cookies = self._deserialization_cookies()</span><br><span class="line">        <span class="comment"># 3、判断cookies是否过期</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            self.get_taobao_nick_name()</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            os.remove(COOKIES_FILE_PATH)</span><br><span class="line">            print(<span class="string">'cookies过期，删除cookies文件！'</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        print(<span class="string">'加载淘宝登录cookies成功!!!'</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_serialization_cookies</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        序列化cookies</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        cookies_dict = requests.utils.dict_from_cookiejar(s.cookies)</span><br><span class="line">        <span class="keyword">with</span> open(<span class="string">'tempc.txt'</span>, <span class="string">'w+'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> file:</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> cookies_dict:</span><br><span class="line">                file.write(i+<span class="string">':'</span>+cookies_dict[i]+<span class="string">'; '</span>)</span><br><span class="line">        <span class="keyword">with</span> open(COOKIES_FILE_PATH, <span class="string">'w+'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> file:</span><br><span class="line">            json.dump(cookies_dict, file)</span><br><span class="line">            print(<span class="string">'保存cookies文件成功！'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_deserialization_cookies</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        反序列化cookies</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">with</span> open(COOKIES_FILE_PATH, <span class="string">'r+'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> file:</span><br><span class="line">            cookies_dict = json.load(file)</span><br><span class="line">            cookies = requests.utils.cookiejar_from_dict(cookies_dict)</span><br><span class="line">            <span class="keyword">return</span> cookies</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_taobao_nick_name</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        获取淘宝昵称</span></span><br><span class="line"><span class="string">        :return: 淘宝昵称</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        headers = &#123;</span><br><span class="line">            <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            response = s.get(self.my_taobao_url, headers=headers)</span><br><span class="line">            response.raise_for_status()</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            print(<span class="string">'获取淘宝主页请求失败！原因：'</span>)</span><br><span class="line">            <span class="keyword">raise</span> e</span><br><span class="line">        <span class="comment"># 提取淘宝昵称</span></span><br><span class="line">        nick_name_match = re.search(<span class="string">r'&lt;input id="mtb-nickname" type="hidden" value="(.*?)"/&gt;'</span>, response.text)</span><br><span class="line">        <span class="keyword">if</span> nick_name_match:</span><br><span class="line">            print(<span class="string">'登录淘宝成功，你的用户名是：&#123;&#125;'</span>.format(nick_name_match.group(<span class="number">1</span>)))</span><br><span class="line">            <span class="keyword">return</span> nick_name_match.group(<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> RuntimeError(<span class="string">'获取淘宝昵称失败！response：&#123;&#125;'</span>.format(response.text))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">order</span><span class="params">(self)</span>:</span></span><br><span class="line">        url = <span class="string">"https://buy.taobao.com/auction/buy_now.jhtml?spm=2013.1.20140002.d1.undefined"</span></span><br><span class="line">        s.cookies = self._deserialization_cookies()</span><br><span class="line">        headers = &#123;</span><br><span class="line">            <span class="string">'accept'</span>: <span class="string">'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9'</span>,</span><br><span class="line">            <span class="comment">#'accept-encoding': ' gzip, deflate, br',</span></span><br><span class="line">            <span class="string">'accept-language'</span>: <span class="string">'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7'</span>,</span><br><span class="line">            <span class="string">'cache-control'</span>: <span class="string">'max-age=0'</span>,</span><br><span class="line">            <span class="string">'content-length'</span>: <span class="string">'762'</span>,</span><br><span class="line">            <span class="string">'content-type'</span>: <span class="string">'application/x-www-form-urlencoded'</span>,</span><br><span class="line">            <span class="comment">#'cookie': 'XSRF-TOKEN:bce57316-fd8f-4a80-b38e-6c97169750fd; _cc_:U%2BGCWk%2F7og%3D%3D; _hvn_login:0; _l_g_:Ug%3D%3D; _nk_:%5Cu9E21%5Cu722A%5Cu91CA%5Cu5C0A; _sameste_flag_:true; _tb_token_:fb5977336131; cookie1:BqeFozsAR2aqi6ZeWHnKPSq%2Bkv78m6zi5oA8CN5%2BRp8%3D; cookie17:UUwU26AEyM8whA%3D%3D; cookie2:120746cea78eb2f1afc31c71040154a; csg:07feb9d1; dnk:%5Cu9E21%5Cu722A%5Cu91CA%5Cu5C0A; existShop:MTU4MzIxNzExOA%3D%3D; havana_tgc:eyJjcmVhdGVUaW1lIjoxNTgzMjE3MTE4MjA3LCJsYW5nIjoiemhfQ04iLCJwYXRpYWxUZ2MiOnsiYWNjSW5mb3MiOnsiMCI6eyJhY2Nlc3NUeXBlIjoxLCJtZW1iZXJJZCI6MjQ0Mjg0ODUwOSwidGd0SWQiOiIxbEIwMTFVcVlRMVEtc2RNMFQzUUpJdyJ9fX19; lc:Vyu3o7Ozk3Ef%2F56yBA%3D%3D; lgc:%5Cu9E21%5Cu722A%5Cu91CA%5Cu5C0A; lid:%E9%B8%A1%E7%88%AA%E9%87%8A%E5%B0%8A; log:lty=Tmc%3D; sg:%E5%B0%8A9f; sgcookie:DFd4goj9nNVDm8XPOEKL5; skt:ada0d70084368a0a; t:da408da31dc3782c0e142cd1a5ce56d; tg:0; tracknick:%5Cu9E21%5Cu722A%5Cu91CA%5Cu5C0A; uc1:pas=0&amp;cookie21=U%2BGCWk%2F7pY%2FF&amp;tag=8&amp;cookie14=UoTUOaxh3ORVcQ%3D%3D&amp;lng=zh_CN&amp;cookie15=WqG3DMC9VAQiUQ%3D%3D&amp;cookie16=UIHiLt3xCS3yM2h4eKHS9lpEOw%3D%3D&amp;existShop=false; uc3:id2=UUwU26AEyM8whA%3D%3D&amp;lg2=UIHiLt3xD8xYTw%3D%3D&amp;nk2=3z9%2FtN4fGj4%3D&amp;vt3=F8dBxd35YioHqXT24HU%3D; uc4:id4=0%40U27L9u0BzJYiJHlDUhv%2Fp9U77FPP&amp;nk4=0%403cvz%2Bum4meUwidekhs3ybmXXuQ%3D%3D; unb:2442848509; _samesite_flag_:true; cookieCheck:88161; _mw_us_time_:1583217117680; ',</span></span><br><span class="line">            <span class="string">'dnt'</span>: <span class="string">'1'</span>,</span><br><span class="line">            <span class="string">'origin'</span>: <span class="string">'https://item.taobao.com'</span>,</span><br><span class="line">            <span class="string">'referer'</span>: <span class="string">'https://item.taobao.com/item.htm?spm=a230r.1.14.54.23c23e23NNwLV3&amp;id=608583590222&amp;ns=1&amp;abbucket=8'</span>,</span><br><span class="line">            <span class="string">'sec-fetch-dest'</span>: <span class="string">'document'</span>,</span><br><span class="line">            <span class="string">'sec-fetch-mode'</span>: <span class="string">'navigate'</span>,</span><br><span class="line">            <span class="string">'sec-fetch-site'</span>: <span class="string">'same-site'</span>,</span><br><span class="line">            <span class="string">'sec-fetch-user'</span>: <span class="string">'?1'</span>,</span><br><span class="line">            <span class="string">'upgrade-insecure-requests'</span>: <span class="string">'1'</span>,</span><br><span class="line">            <span class="string">'user-agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36'</span>,</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment"># 登录toabao.com提交的数据，如果登录失败，可以从浏览器复制你的form data</span></span><br><span class="line">        data = &#123;</span><br><span class="line">            <span class="string">'onekey'</span>: <span class="string">''</span>,</span><br><span class="line">            <span class="string">'gmtCreate'</span>: <span class="string">''</span>,</span><br><span class="line">            <span class="string">'checkCodeIds'</span>: <span class="string">''</span>,</span><br><span class="line">            <span class="string">'secStrNoCCode'</span>: <span class="string">''</span>,</span><br><span class="line">            <span class="string">'tb_token'</span>: <span class="string">'ebe54b3be8765'</span>,</span><br><span class="line">            <span class="string">'item_url_refer'</span>: <span class="string">'https://s.taobao.com/search?initiative_id=tbindexz_20170306&amp;ie=utf8&amp;spm=a21bo.2017.201856-taobao-item.2&amp;sourceId=tb.index&amp;search_type=item&amp;ssid=s5-e&amp;commend=all&amp;imgfile=&amp;q=%E5%B0%8F%E7%B1%B36%E5%B1%8F%E5%B9%95%E6%80%BB%E6%88%90&amp;suggest=history_1&amp;_input_charset=utf-8&amp;wq=&amp;suggest_query=&amp;source=suggest'</span>,</span><br><span class="line">            <span class="string">'item_id'</span>: <span class="string">'608583590222'</span>,</span><br><span class="line">            <span class="string">'item_id_num'</span>: <span class="string">'608583590222'</span>,</span><br><span class="line">            <span class="string">'auction_type'</span>: <span class="string">'b'</span>,</span><br><span class="line">            <span class="string">'from'</span>: <span class="string">'item_detail'</span>,</span><br><span class="line">            <span class="string">'frm'</span>: <span class="string">'undefined'</span>,</span><br><span class="line">            <span class="string">'current_price'</span>: <span class="string">'85.00'</span>,</span><br><span class="line">            <span class="string">'auto_post1'</span>: <span class="string">''</span>,</span><br><span class="line">            <span class="string">'quantity'</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="string">'skuId'</span>: <span class="string">'4273694133892'</span>,</span><br><span class="line">            <span class="string">'skuInfo'</span>: <span class="string">''</span>,</span><br><span class="line">            <span class="string">'buyer_from'</span>: <span class="string">'undefined'</span>,</span><br><span class="line">            <span class="string">'chargeTypeId'</span>: <span class="string">''</span>,</span><br><span class="line">            <span class="string">'root_refer'</span>: <span class="string">'undefined'</span>,</span><br><span class="line">            <span class="string">'source_time'</span>: <span class="string">'1583214363061'</span>,</span><br><span class="line">            <span class="string">'ybhpss'</span>: <span class="string">'undefined'</span>,</span><br><span class="line">            <span class="string">'fuwubaoInfo'</span>: <span class="string">''</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            response = s.post(url, headers=headers, data=data,timeout=self.timeout)</span><br><span class="line">            <span class="comment">#print(response.text)</span></span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            print(<span class="string">'订单页面返回失败：'</span>)</span><br><span class="line">            <span class="keyword">raise</span> e</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 淘宝用户名</span></span><br><span class="line">    username = <span class="string">'nick_name'</span></span><br><span class="line">    <span class="comment"># 淘宝重要参数，从浏览器或抓包工具中复制，可重复使用</span></span><br><span class="line">    ua = ua = <span class="string">'122#j42FSDsJEExZUJpZREpjEJponDJE7SNEEP7rEJ+gu4Ep+BzopCG6p+TzFolE7SNpvl7ZpJRcuJPE+BNPpC76EJponDJLqgNEEPGrpJ+gu4Ep+FQPpoGUEELWn4yP7fypE2YuAOzowf+mczd4xQwPZJ/BHr3XHPb612cVDBA3nzdot66aptZudF+Dqm/BJ24kjwUbLhxI0LlIU51t2b0WyUfzIyADqMfpMNnU7qvmuOIEDnGhSorLyNbbyFfmqMf2ENpangL4uO8pELVZGWZRfsTbyFfDmSfbEEpMnMp1uOIEELXZ8oL6JNEERBfmqM32E5pangL4uljEDLVr8CpUJ4bEyNRDqMfjmDpxngLV8Om9E5G+PkoNmzJL4EXwIfwIGRkP+e7gnDdSoSYYYq6rr62jtZ2O23Pn6VlFi6S2wNfeLySDVaS2mshl7w2LnslQuZ/0C1dz8K4pjth2hllY88eBtF8y9QdqXBNrRfLMt9GtnL4cfMJJWJuazlRSEg+GWhtOREosfn8BQjy44CRZ7mJjnk5HcuwUA/KqD+3E40DFHJ6dJobSNkmncMPKvdi4bMf+uTwPm2xP6QS+6LmY8xYD8vqGhm9FVyoYHTv3Hnz9PnE+wWQLUrOJ2nMNMYZRPbXHnqDqv9Nu4uhh6AAyCAMKLw/y2BCxYmw2hRGq6rvY9nff7szqg54eHGAKObJURFRrVqHMDjAAG9Si9Hh0vSJfSBzUc0UjvyvICN+qbiYyTyemP9pcl7juaLgAl3zrHIth0chZF8ejlAva9t3/h7Xay97SmfdYI9tSkyEmKxvz2XnUYaDe5h/S9o4qqqhhRTeRQj6ZvBivU+Uaixj6w4lsT4ykgh3kkk0EJg1vLHMyKzyw0H7vj9fqdHMryMCWdDkqC8TPjJUMe8x70q9/+1qdvnYdHvbwtzT+oh6FgdTB96Y3//GG5wk6jjdn0Ty8uzBZ44mXs+K9D5Ff'</span></span><br><span class="line">    <span class="comment"># 加密后的密码，从浏览器或抓包工具中复制，可重复使用</span></span><br><span class="line">    TPL_password2 = <span class="string">'906c31076803ea0b0b1e56d2c5f5fe4e7141b054a90bbc52d5abd70b2b16d472c4310a1530a44cec2556be4b14fc0e9755b2d0efd84d7b2e424ea9334353af0d9f215fb51535ea1c83d522604cb904095480294f3eb9d9c211cba06e997f655e952c971828e5725c476e84693fd574910dba44ee6d6429824caba9745b0d802b'</span></span><br><span class="line">    ul = UsernameLogin(username, ua, TPL_password2)</span><br><span class="line">    ul.login()</span><br><span class="line">    <span class="comment">#ul.order()</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://blog.paomax.com/2020/03/04/1600.html" title="淘宝登录密码RSA加密分析及相关代码的python实现" target="_blank" rel="external">https://blog.paomax.com/2020/03/04/1600.html</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/TenYoDun" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.png" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/TenYoDun" target="_blank"><span class="text-dark">泡码侠</span><small class="ml-1x">如泡茶一样，品味代码</small></a></h3>
+        <div>热爱新鲜事物，有一颗永远充满极客的热情的心，关注计算机技术，对编程痴狂</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/04/09/1906.html" title="FP-growth算法"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2019/07/30/0908.html" title="单变量线性回归"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/TenYoDun" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/brewcode" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2021 TenYoDun
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '407e73184c933f0ec5e7',
+    clientSecret: '5dd6516b266883666f03f7f8fbb3b44ea0c17c64',
+    repo: 'gitalk',
+    owner: 'TenYoDun',
+    admin: ['TenYoDun'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+      
+
+
+
+
+
+
+
+</body>
+</html>
