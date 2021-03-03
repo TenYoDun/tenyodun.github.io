@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://blog.paomax.com/"/>
-  <updated>2021-02-20T05:08:10.490Z</updated>
+  <updated>2021-03-03T01:33:56.797Z</updated>
   <id>https://blog.paomax.com/</id>
   
   <author>
@@ -21,11 +21,11 @@
     <link href="https://blog.paomax.com/2020/05/19/1900.html"/>
     <id>https://blog.paomax.com/2020/05/19/1900.html</id>
     <published>2020-05-19T11:00:28.000Z</published>
-    <updated>2021-02-20T05:08:10.490Z</updated>
+    <updated>2021-03-03T01:33:56.797Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;第二个版本，代码优化了很多，基本符合论文思路，写这一遍的最大感触就是python的字典机制，&lt;strong&gt;注意浅赋值和深复制&lt;/strong&gt;&lt;/p&gt;
+      &lt;p&gt;第二个版本，代码优化了很多，基本符合论文思路，写这一遍的最大感触就是python的字典机制，&lt;strong&gt;注意浅复制和深复制&lt;/strong&gt;&lt;/p&gt;
     
     </summary>
     
